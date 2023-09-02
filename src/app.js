@@ -1,6 +1,6 @@
 // ==== REQUESTING DATA FROM API ====
 // data = JSON with bdays
-fetch('https://api.npoint.io/0e6a56eb1d69893e4e96')
+fetch('https://am-xix.github.io/cessair-automatic-birthdays/db.json')
 .then(response => {
     return response.json()})
 .then(data => {
