@@ -1,10 +1,12 @@
-# cessair-automatic-birthdays
+# Cessair Automatic Birthdays
 _C.A.B_
 
 ### Introduction
 
 Here's a guide through setting up your **automatic birthday wishes** on your frontpage box thanks to a **google form**.<br>
 > The boxes with icons 💡 are simple technical explanations to read only if you want to learn things along the way. If you're just here for the magic or you already know all the tricks, skip those.
+
+**WARNING :** when asking for your users' birthdays, do not register any **year** for privacy reasons. Always stick to day and month for any public destination, just like WoX and the cake system.
 
 ## 1️⃣ Setting up your form
 
@@ -201,3 +203,7 @@ fetch('https://am-xix.github.io/cessair-automatic-birthdays/src/wop-us-bd.json')
 ```
 
 ### 🎉 Congrats! You've succeeded this tutorial!
+.<br>
+.<br>
+.<br>
+Now, check out [Maintenance](/maintenance.md) to discover how to keep your birthdays updated and healthy!
