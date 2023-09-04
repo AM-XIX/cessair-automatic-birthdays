@@ -117,7 +117,7 @@ Last 2 steps.
 
 **JS**
 ```
-/ ==== REQUESTING DATA FROM API ====
+// ==== REQUESTING DATA FROM API ====
 // data = JSON with bdays
 fetch('https://am-xix.github.io/cessair-automatic-birthdays/src/YOUR_JSON_FILE')
 .then(response => {
@@ -186,11 +186,12 @@ function getCurrentDate() {
 
         return currentDate;
 }
+// ---- code by Shaynelock Hall ----
 ```
 
 Put this script in the **same script tag you're already using**, do not create another <script> just for this.
 
-_Side note : this code is heavily commented to help you out with the process but once you've read this a couple of times, I'd suggest removing these comments as this code is not destined to be shared with anyone else and you would want to make some space in your frontpage box code, haha._
+_Side note : this code is heavily commented to help you out with the process but once you've read this a couple of times, I'd suggest removing these comments (except for credits) as this code is not destined to be shared with any dev and you would want to make some space in your frontpage box code, haha._
 
 **5.2** — Complete your link in JS
 
