@@ -1,10 +1,9 @@
 // ==== REQUESTING DATA FROM API ====
 // data = JSON with bdays
-fetch('https://am-xix.github.io/cessair-automatic-birthdays/src/woo-bd.json')
+fetch('https://am-xix.github.io/cessair-automatic-birthdays/src/YOUR_JSON_FILE')
 .then(response => {
     return response.json()})
 .then(data => {
-    console.log(data);
     mainApp(data)})
 .catch(err => {
     console.log(err)
@@ -26,7 +25,6 @@ function mainApp(data) {
 
     // --- Loop for each entry ---
     for(let i = 0; i < data.length; i++) {
-        console.log(data[i].Date == getCurrentDate());
 
         // --- if an entry's bday is today
         if(data[i].Date == getCurrentDate()) {
@@ -47,8 +45,9 @@ function mainApp(data) {
         }
     }   
 }
-    // ==== GETTING CURRENT DATE ====
-    function getCurrentDate() {
+
+// ==== GETTING CURRENT DATE ====
+function getCurrentDate() {
         const date = new Date();
 
         // getting month names instead of numbers
@@ -67,6 +66,5 @@ function mainApp(data) {
         let currentDate = `${currentMonth} ${currentDay}`;
 
         return currentDate;
-    }
-
-
+}
+// ---- code by Shaynelock Hall ----
