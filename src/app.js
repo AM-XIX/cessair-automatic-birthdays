@@ -4,7 +4,6 @@ fetch('https://am-xix.github.io/cessair-automatic-birthdays/src/woo-bd.json')
 .then(response => {
     return response.json()})
 .then(data => {
-    console.log(data);
     mainApp(data)})
 .catch(err => {
     console.log(err)
@@ -26,7 +25,6 @@ function mainApp(data) {
 
     // --- Loop for each entry ---
     for(let i = 0; i < data.length; i++) {
-        console.log(data[i].Date == getCurrentDate());
 
         // --- if an entry's bday is today
         if(data[i].Date == getCurrentDate()) {
