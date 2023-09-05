@@ -1,6 +1,6 @@
 // ==== REQUESTING DATA FROM API ====
 // data = JSON with bdays
-fetch('https://am-xix.github.io/cessair-automatic-birthdays/src/woo-bd.json')
+fetch('https://am-xix.github.io/cessair-automatic-birthdays/src/YOUR_JSON_FILE')
 .then(response => {
     return response.json()})
 .then(data => {
@@ -45,8 +45,9 @@ function mainApp(data) {
         }
     }   
 }
-    // ==== GETTING CURRENT DATE ====
-    function getCurrentDate() {
+
+// ==== GETTING CURRENT DATE ====
+function getCurrentDate() {
         const date = new Date();
 
         // getting month names instead of numbers
@@ -65,6 +66,5 @@ function mainApp(data) {
         let currentDate = `${currentMonth} ${currentDay}`;
 
         return currentDate;
-    }
-
-
+}
+// ---- code by Shaynelock Hall ----
