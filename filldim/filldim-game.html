@@ -1,0 +1,2031 @@
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Capture the Flag — Game</title>
+
+  <style>
+    :root {
+      --bg: rgba(255,2555,255, 0);
+      --font: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+      --panel: #eae6ce;
+      --ink: black;
+      --muted: #6b6b6b;
+      --line: #d9d4bb;
+      --chip: #e9e6d4;
+      --green: #1aa84b;
+      --ref: #444;
+    }
+
+    html,
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: var(--font);
+    }
+
+    body {
+      max-width: 1100px;
+      margin: 24px auto;
+      padding: 0 16px;
+    }
+
+    /* TOP BAR */
+    .topbar {
+      display: grid;
+      grid-template-columns: auto 1fr auto auto auto 1fr auto;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 16px;
+    }
+
+    .emblem {
+      width: 54px;
+      height: 54px;
+      object-fit: contain;
+      filter: drop-shadow(0px 0px 5px rgba(0, 0, 0, .7));
+    }
+
+    .teamName {
+      font-weight: 800;
+      font-size: 26px;
+      white-space: nowrap;
+    }
+
+    .score {
+      font-weight: 700;
+      font-size: 32px;
+      letter-spacing: 1px;
+    }
+
+    .right {
+      text-align: right;
+    }
+
+    .vs {
+      font-weight: 800;
+      color: var(--muted);
+      letter-spacing: 0.1em;
+    }
+
+    /* CHAT */
+    .chat-wrap {
+      background: rgba(255, 255, 255, .3);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      padding: 10px;
+      margin-bottom: 14px;
+    }
+
+    #chatBox {
+      height: 450px;
+      overflow: auto;
+      border: 1px solid var(--line);
+      padding: 10px;
+      box-sizing: border-box;
+    }
+
+    .chat-line {
+      background: rgba(255, 255, 255, .9);
+      border-left: 6px solid var(--line);
+      padding: 8px 10px;
+      margin: 7px 0;
+      border-radius: 4px;
+      box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.03) inset;
+      font-size: 14px;
+      box-sizing: border-box;
+    }
+
+    .chat-line .who {
+      font-weight: 700;
+    }
+
+    .chat-controls {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .chat-controls input {
+      flex: 1;
+      padding: 10px;
+      font-size: 14px;
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      background: #fff;
+    }
+
+    .btn {
+      padding: 10px 12px;
+      border: 1px solid #9aa283;
+      background: #9bb16b;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      transition: .2s ease-in-out;
+      box-shadow: 1px 1px 2px rgba(0, 0, 0, 0);
+    }
+
+    .btn:hover {
+      filter: brightness(110%);
+      box-shadow: 1px 1px 2px rgba(0, 0, 0, .3);
+    }
+
+    .btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-plain {
+      background: #fff;
+      color: #333;
+      border-color: var(--line);
+    }
+
+    .btn-icon {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* ===== Referee Questions ===== */
+    .chat-line.chat-question {
+      border-left: none;
+      border: 1px solid rgba(0, 0, 0, .7);
+      box-shadow: 0px 0px 5px rgba(0, 0, 0, .3);
+      background: rgba(255, 255, 255, .7);
+      border-radius: 6px;
+      margin: 8px 0;
+      padding: 10px 12px;
+    }
+
+    .chat-question .q-row {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 34px;
+    }
+
+    .chat-question .q-time {
+      min-width: 56px;
+      text-align: center;
+      padding: 4px 10px;
+      border-radius: 8px;
+      background: #333;
+      color: #fff;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .chat-question .q-time.expired {
+      background: #b91c1c;
+    }
+
+    .chat-question .q-text {
+      flex: 1;
+      text-align: center;
+      font-weight: 800;
+    }
+
+    .chat-question .q-spacer {
+      min-width: 56px;
+      display: block;
+    }
+
+    .score-controls {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .score-controls .ptsInput {
+      width: 50%;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .score-controls .btnScore {
+      padding: 10px 12px;
+      border: 1px solid #9aa283;
+      background: #9bb16b;
+      color: #fff;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 600;
+      line-height: 1;
+      text-align: center;
+    }
+
+    .score-controls .btnScore:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+
+    /* LOGIN STRIP */
+    .strip {
+      display: grid;
+      grid-template-columns: auto 1fr auto;
+      gap: 16px;
+      align-items: center;
+      margin: 10px 0 18px;
+    }
+
+    #btnToggleLogin {
+      border-radius: 6px;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+
+    .login-form {
+      display: none;
+      background: rgba(255,255,255,.3);
+      border: 1px dashed var(--line);
+      padding: 10px;
+      border-radius: 6px;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .login-form.active {
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    .login-form input[type="email"] {
+      min-width: 260px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .radio {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      margin: 0 8px 0 0;
+      padding: 6px 10px;
+      background: rgba(255, 255, 255, .4);
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      transition: .1s ease-in-out;
+      cursor: pointer;
+    }
+
+    .radio:hover,
+    .radio:active,
+    .radio:has(input[type="radio"]:checked) {
+      background: rgba(255, 255, 255, 1);
+      border: 1px solid black;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .meta .who {
+      font-weight: 700;
+    }
+
+    #fullName,
+    #password {
+      border-radius: 30px;
+      padding: 6px 10px;
+    }
+
+    /* REFEREE PANEL */
+    .panel {
+      background: rgba(255,255,255,.3);
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 14px;
+      margin: 16px 0;
+      box-sizing: border-box;
+    }
+
+    .panel h3 {
+      margin: 0 0 10px;
+      font-size: 18px;
+    }
+
+    .ref-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      align-items: start;
+    }
+
+    .ref-team {
+      font-size: 14px;
+      width: 45%;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: #fcfaf0;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      padding: 10px;
+    }
+
+    .ref-team .ctl {
+      margin-left: auto;
+      display: flex;
+      lex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .badge {
+      background: #ece7cd;
+      border: 1px solid var(--line);
+      padding: 6px 10px;
+      border-radius: 999px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 10px 0;
+    }
+
+    .toolbar .pill {
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      background: #efe9c9;
+      border-radius: 999px;
+      font-size: 13px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .toolbar .pill .dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: #aaa;
+    }
+
+    /* PLAYERS */
+    .players {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      margin: 20px 0 40px;
+    }
+
+    .players h3 {
+      font-size: 24px;
+      font-weight: 800;
+      margin: 0 0 6px;
+      border-bottom: 2px solid var(--ink);
+      padding-bottom: 6px;
+    }
+
+    .plist {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .plist li {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      align-items: center;
+      padding: 4px 0;
+      font-size: 15px;
+    }
+
+    #playersB li {
+      grid-template-columns: auto 1fr;
+    }
+
+    .role {
+      color: var(--muted);
+      min-width: 90px;
+      text-align: right;
+    }
+
+    #playersB .role {
+      text-align: left;
+    }
+
+    .dotL,
+    .dotR {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--green);
+      display: inline-block;
+    }
+
+    .line-left {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .line-right {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      justify-content: flex-end;
+    }
+
+    /* === Role mute === */
+    .toolbar .pill.active {
+      background: #fff;
+      border-color: #bbb;
+      box-shadow: 0 0 0 2px rgba(0, 0, 0, .06) inset;
+    }
+
+    .toolbar .pill {
+      cursor: pointer;
+    }
+
+    .toolbar[data-disabled="1"] .pill {
+      cursor: not-allowed;
+      opacity: .6;
+    }
+
+    .credits {
+      font-size:11px;
+      text-align:center;
+      font-style:italic;
+    }
+
+    .credits a {
+      color:#00864B;
+    }
+
+    /* DEV pills hidden */
+    .dev {
+      display: none;
+    }
+
+    /* ================== Responsive ================== */
+
+    /* Tablet */
+    @media (max-width: 900px) {
+      body { padding: 0 12px; }
+      .teamName { font-size: 22px; }
+      .score { font-size: 28px; }
+      .emblem { width: 46px; height: 46px; }
+      .ref-grid { gap: 12px; }
+      .toolbar { gap: 6px; }
+    }
+
+    /* Mobile */
+    @media (max-width: 640px) {
+      .topbar {
+        grid-template-columns: auto 1fr auto;
+        grid-template-areas:
+          "emA nameA scA"
+          ".    vs    ."
+          "scB nameB emB";
+        gap: 8px;
+      }
+      #emblemA { grid-area: emA; }
+      #teamAName { grid-area: nameA; }
+      #scoreA { grid-area: scA; text-align: right; }
+      .vs { grid-area: vs; text-align: center; }
+      #scoreB { grid-area: scB; text-align: left; }
+      #teamBName { grid-area: nameB; text-align: center; }
+      #emblemB { grid-area: emB; }
+
+      .teamName { font-size: 20px; }
+      .score { font-size: 26px; }
+      .emblem { width: 40px; height: 40px; }
+
+      .strip {
+        grid-template-columns: 1fr;
+        row-gap: 8px;
+        align-items: stretch;
+      }
+      .login-form.active {
+        flex-direction: column;
+        align-items: stretch;
+      }
+      .login-form input[type="text"],
+      .login-form input[type="password"] {
+        width: 100%;
+      }
+      .radio { padding: 8px 12px; }
+
+      .players {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+      #listBLabel { text-align: left; }
+      #playersB li { grid-template-columns: auto 1fr; }
+      #playersB .role { text-align: left; }
+      .plist li { padding: 6px 0; }
+
+      /* CHAT */
+      .chat-controls { gap: 8px; }
+      .chat-controls input { font-size: 16px; }
+      .ref-grid { flex-direction: column; gap: 12px; }
+
+      .ref-team {
+        width: 100%;
+        display: grid;
+        grid-template-columns: auto 1fr;
+        grid-template-areas:
+          "logo name"
+          "controls controls";
+        gap: 8px 10px;
+        align-items: center;
+        max-width: 100%;
+        box-sizing: border-box;
+        min-width: 0;               
+        overflow: hidden;
+      }
+      .ref-team .emblem { grid-area: logo; }
+      .ref-team > strong {
+        grid-area: name;
+        min-width: 0;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .score-controls {
+        grid-area: controls;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;             
+        width: 100%;
+      }
+      .score-controls .ptsInput {
+        flex: 1 1 120px;            
+        min-width: 0;                
+        width: auto;
+      }
+      .score-controls .btnScore {
+        flex: 0 0 44px;               
+        min-width: 44px;
+        padding: 10px 0;
+        text-align: center;
+      }
+      .panel { overflow-x: hidden; }
+
+      #refPanel .chat-controls {
+        flex-wrap: wrap;
+        align-items: stretch;
+        gap: 8px;
+      }
+      #refPanel .chat-controls input {
+        flex: 1 1 100%;
+        min-width: 0;
+      }
+      #refQTimer { order: 3; }       
+      #refQTimer input {
+        width: 56px;                 
+        min-width: 48px;
+      }
+    }
+
+    @media (max-width: 360px) {
+      .teamName { font-size: 18px; }
+      .score { font-size: 24px; }
+      .emblem { width: 36px; height: 36px; }
+    }
+  </style>
+</head>
+
+<script>
+  window.GAME_ID = "_____";
+  try {
+    const sp = new URLSearchParams(location.search);
+    const q = sp.get("game");
+    if (q) window.__GAME_ID_OVERRIDE = q;
+  } catch {}
+</script>
+
+<!-- TOP BAR -->
+<div class="topbar">
+  <img id="emblemA" class="emblem" alt="" />
+  <div class="teamName" id="teamAName">Team A</div>
+  <div class="score" id="scoreA">0</div>
+  <div class="vs">VS</div>
+  <div class="score right" id="scoreB">0</div>
+  <div class="teamName right" id="teamBName">Team B</div>
+  <img id="emblemB" class="emblem" alt="" />
+</div>
+
+<!-- CHAT -->
+<div class="chat-wrap">
+  <div id="chatBox"></div>
+  <div class="chat-controls" id="chatControls">
+    <input id="chatInput" placeholder="Write a message…" />
+    <button class="btn" id="chatSend">Send</button>
+  </div>
+</div>
+
+<!-- LOGIN STRIP -->
+<div class="strip">
+  <button class="btn-plain" id="btnToggleLogin">Login</button>
+  <div class="meta">
+    <div class="muted">
+      Logged in as: <span class="who" id="whoIAm">Spectator</span>
+    </div>
+  </div>
+  <div class="muted">Referee: <span id="refereeBadge">—</span></div>
+</div>
+
+<div class="login-form" id="loginForm">
+  <input id="fullName" type="text" placeholder="Full name (exactly as on roster)" />
+  <input id="password" type="password" placeholder="Password" />
+  <label class="radio"><input type="radio" name="role" value="player" checked /> Player</label>
+  <label class="radio"><input type="radio" name="role" value="referee" /> Referee</label>
+  <button class="btn" id="btnClaim">Join</button>
+  <div class="muted" id="loginMsg" style="margin-left:8px;"></div>
+</div>
+
+<!-- REFEREE PANEL -->
+<div class="panel" id="refPanel" style="display: none">
+  <h3>Referee</h3>
+  <!-- Toolbar : Roles -->
+  <div class="toolbar">
+    <span class="pill"><span class="dot"></span> All</span>
+    <span class="pill"><span class="dot"></span> Keeper</span>
+    <span class="pill"><span class="dot"></span> Beaters</span>
+    <span class="pill"><span class="dot"></span> Chasers</span>
+    <span class="pill"><span class="dot"></span> Seeker</span>
+  </div>
+  <!-- Team scores -->
+  <div class="ref-grid">
+    <div class="ref-team">
+      <img id="refEmblemA" class="emblem" alt="" />
+      <strong id="refTeamALabel">Team A</strong>
+      <div class="score-controls" data-team="A">
+        <input type="number" class="ptsInput" placeholder="Points" min="1" />
+        <button class="btn btnScore" data-team="A" data-sign="plus">+</button>
+        <button class="btn btnScore minus" data-team="A" data-sign="minus">
+          −
+        </button>
+      </div>
+    </div>
+    <div class="ref-team">
+      <img id="refEmblemB" class="emblem" alt="" />
+      <strong id="refTeamBLabel">Team B</strong>
+      <div class="score-controls" data-team="B">
+        <input type="number" class="ptsInput" placeholder="Points" min="1" />
+        <button class="btn btnScore" data-team="B" data-sign="plus">+</button>
+        <button class="btn btnScore" data-team="B" data-sign="minus">−</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="chat-controls">
+    <input placeholder="Write a message…" disabled />
+    <button class="btn" disabled>Send</button>
+    <button class="btn-plain" disabled>⏱</button>
+    <button class="btn-plain" disabled>▾</button>
+  </div>
+
+  <div style="margin-top: 10px">
+    <button class="btn btn-icon" id="btnRoll" disabled>🎲 Roll the dice</button>
+  </div>
+  <div style="margin-top: 10px" id="refGameCtl">
+    <button class="btn btn-icon" id="btnEndGame" disabled>⛔ End game</button>
+    <button class="btn btn-icon" id="btnRestartGame" style="display:none;" disabled>🔄 Restart game</button>
+</div>
+</div>
+
+<!-- PLAYERS -->
+<div class="players">
+  <div>
+    <h3 id="listALabel">Team A</h3>
+    <ul class="plist" id="playersA"></ul>
+  </div>
+  <div>
+    <h3 id="listBLabel" style="text-align: right">Team B</h3>
+    <ul class="plist" id="playersB"></ul>
+  </div>
+</div>
+
+<!-- DEV pills -->
+<div class="dev">
+  <strong>Status</strong>
+  <div>ID: <code id="gameIdLabel">—</code></div>
+  <div id="me">Signing in…</div>
+  <div class="status">
+    <div class="pill" id="stInit">Init</div>
+    <div class="pill" id="stAuth">Auth</div>
+    <div class="pill" id="stFS">Firestore</div>
+    <div class="pill" id="stGame">Game</div>
+  </div>
+  <div id="authInfo" class="muted">&nbsp;</div>
+</div>
+
+<!-- DEV pills -->
+<div class="credits">Game coded by <a href="https://worldofolympians.fr/user/profile/shaynelock-hall" target="_blank">Shaynelock Hall</a></div>
+<!-- Firebase (compat) -->
+<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore-compat.js"></script>
+<script>
+/* ===================== 1) Tiny utils ===================== */
+function setPill(id, state, msg){
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.remove('ok','err','warn');
+  if (state) el.classList.add(state);
+  if (msg) el.textContent = msg;
+}
+function escapeHtml(s){
+  return String(s).replace(/[&<>"']/g, m =>
+    m === '&' ? '&amp;' : m === '<' ? '&lt;' : m === '>' ? '&gt;' : m === '"' ? '&quot;' : '&#39;'
+  );
+}
+function nameKeyFromFull(n){
+  return (n || '').trim().toLowerCase().replace(/\s+/g, ' ').replace(/\//g, '-');
+}
+
+/* ===================== 2) Resolve GAME_ID early ===================== */
+let resolvedGameId = '';
+(function resolveGameId(){
+  try {
+    const sp = new URLSearchParams(location.search);
+    const q = (sp.get('game') || '').trim();
+    if (q) { resolvedGameId = q; console.debug('[Game] Using ?game=', resolvedGameId); return; }
+  } catch {}
+
+  if (typeof window.__GAME_ID_OVERRIDE !== 'undefined' && String(window.__GAME_ID_OVERRIDE).trim()){
+    resolvedGameId = String(window.__GAME_ID_OVERRIDE).trim();
+    console.debug('[Game] Using __GAME_ID_OVERRIDE =', resolvedGameId);
+    return;
+  }
+
+  // Support both "const GAME_ID = …" and "window.GAME_ID = …"
+  if (typeof GAME_ID !== 'undefined' && String(GAME_ID).trim()){
+    resolvedGameId = String(GAME_ID).trim();
+    console.debug('[Game] Using global GAME_ID =', resolvedGameId);
+    return;
+  }
+  if (typeof window.GAME_ID !== 'undefined' && String(window.GAME_ID).trim()){
+    resolvedGameId = String(window.GAME_ID).trim();
+    console.debug('[Game] Using window.GAME_ID =', resolvedGameId);
+    return;
+  }
+
+  console.error('[Game] No GAME_ID found. Add ?game=ID or set GAME_ID earlier.');
+})();
+
+/* ===================== 3) Firebase ===================== */
+const firebaseConfig = {
+  apiKey: "AIzaSyCyl03UVC3DVUMqZmd01wUdvaowZBBGYqo",
+  authDomain: "filldim-dev.firebaseapp.com",
+  projectId: "filldim-dev",
+  storageBucket: "filldim-dev.firebasestorage.app",
+  messagingSenderId: "843763394432",
+  appId: "1:843763394432:web:6cad7a2971f8df1fc68365",
+  measurementId: "G-99BQCKJS3B",
+};
+try { firebase.initializeApp(firebaseConfig); setPill('stInit','ok','Init OK'); }
+catch { setPill('stInit','err','Init FAIL'); }
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+/* ===================== 4) DOM refs ===================== */
+const topAName   = document.getElementById('teamAName');
+const topBName   = document.getElementById('teamBName');
+const topAScore  = document.getElementById('scoreA');
+const topBScore  = document.getElementById('scoreB');
+const emblemA    = document.getElementById('emblemA');
+const emblemB    = document.getElementById('emblemB');
+
+// -- Chat
+const chatBox    = document.getElementById('chatBox');
+const chatInput  = document.getElementById('chatInput');
+const chatSend   = document.getElementById('chatSend');
+const chatCtrls  = document.getElementById('chatControls');
+
+// -- Dice
+const btnRoll = document.getElementById('btnRoll');
+
+// -- End game
+const btnEndGame     = document.getElementById('btnEndGame');
+const btnRestartGame = document.getElementById('btnRestartGame');
+
+// --- Character counter 
+let chatCounter = document.getElementById('chatCounter');
+if (!chatCounter && chatCtrls) {
+  chatCounter = document.createElement('div');
+  chatCounter.id = 'chatCounter';
+  chatCounter.className = 'muted';
+  chatCounter.style.marginTop = '4px';
+  chatCtrls.parentElement.appendChild(chatCounter);
+}
+
+// --- Sticky banner
+const bannerLatest = document.createElement('button');
+bannerLatest.type = 'button';
+bannerLatest.id = 'bannerLatest';
+bannerLatest.textContent = "You're viewing older messages — Jump to latest";
+Object.assign(bannerLatest.style, {
+  position: 'sticky',
+  top: '0',
+  width: '100%',
+  display: 'none',                
+  background: '#fff7cc',
+  border: '1px solid var(--line)',
+  borderTop: 'none',
+  padding: '8px 12px',
+  textAlign: 'center',
+  fontWeight: '700',
+  zIndex: '1',
+  borderRadius: '4px',
+  boxShadow: '0 1px 0 rgba(0,0,0,.05)',
+  cursor: 'pointer'
+});
+try { chatBox.insertBefore(bannerLatest, chatBox.firstChild); } catch {}
+
+// --- Helpers for scroll & banner visibility
+const BOTTOM_EPS = 24;
+function isNearBottom() {
+  return (chatBox.scrollTop + chatBox.clientHeight) >= (chatBox.scrollHeight - BOTTOM_EPS);
+}
+
+chatBox.addEventListener('scroll', () => {
+  userPinnedToBottom = isNearBottom();
+  bannerLatest.style.display = userPinnedToBottom ? 'none' : 'block';
+});
+
+
+bannerLatest.onclick = () => {
+  chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
+  window.userPinnedToBottom = true;
+  bannerLatest.style.display = 'none';
+};
+
+// --- Kill autofill / login suggestions on the chat input
+try {
+  chatInput.setAttribute('autocomplete', 'off');
+  chatInput.setAttribute('autocapitalize', 'off');
+  chatInput.setAttribute('autocorrect', 'off');
+  chatInput.setAttribute('spellcheck', 'false');
+  chatInput.setAttribute('inputmode', 'text');
+  chatInput.setAttribute('name', 'message-' + Math.random().toString(36).slice(2));
+} catch {}
+
+const btnToggleLogin = document.getElementById('btnToggleLogin');
+const loginForm  = document.getElementById('loginForm');
+const fullNameEl = document.getElementById('fullName');
+const passEl     = document.getElementById('password');
+const btnClaim   = document.getElementById('btnClaim');
+
+let loginMsg   = document.getElementById('loginMsg');
+if (!loginMsg && loginForm) {
+  loginMsg = document.createElement('div');
+  loginMsg.id = 'loginMsg';
+  loginMsg.className = 'muted';
+  loginMsg.style.marginLeft = '8px';
+  loginForm.appendChild(loginMsg);
+}
+
+try { passEl.setAttribute('autocomplete', 'new-password'); } catch {}
+
+const whoIAm       = document.getElementById('whoIAm');
+const refereeBadge = document.getElementById('refereeBadge');
+
+const refPanel      = document.getElementById('refPanel');
+const refEmblemA    = document.getElementById('refEmblemA');
+const refEmblemB    = document.getElementById('refEmblemB');
+const refTeamALabel = document.getElementById('refTeamALabel');
+const refTeamBLabel = document.getElementById('refTeamBLabel');
+
+const listALabel = document.getElementById('listALabel');
+const listBLabel = document.getElementById('listBLabel');
+const playersA   = document.getElementById('playersA');
+const playersB   = document.getElementById('playersB');
+
+const refAskControls = refPanel?.querySelector('.chat-controls');
+let refQInput, refQSend, refQSecs;
+
+if (refAskControls) {
+  const inputEl  = refAskControls.querySelector('input');
+  const sendBtn  = refAskControls.querySelector('button.btn');
+  const plainBtn = refAskControls.querySelectorAll('button.btn-plain');
+
+  if (inputEl) {
+    refQInput = inputEl;
+    refQInput.id = 'refQInput';
+    refQInput.placeholder = 'Ask a question…';
+    try {
+      refQInput.setAttribute('autocomplete', 'off');
+      refQInput.setAttribute('autocapitalize', 'off');
+      refQInput.setAttribute('autocorrect', 'off');
+      refQInput.setAttribute('spellcheck', 'false');
+      refQInput.setAttribute('inputmode', 'text');
+      refQInput.setAttribute('name', 'refq-' + Math.random().toString(36).slice(2));
+    } catch {}
+  }
+
+  if (sendBtn) {
+    refQSend = sendBtn;
+    refQSend.id = 'refQSend';
+    refQSend.textContent = 'Ask';
+  }
+
+  const badge = document.createElement('span');
+  badge.className = 'badge';
+  badge.id = 'refQTimer';
+  badge.innerHTML = `
+    <span aria-hidden="true">⏱</span>
+    <input id="refQSecs" type="number" min="1" placeholder="0" style="width:64px; margin:0 6px;" />
+    <span class="muted">s</span>
+  `;
+  refQSecs = badge.querySelector('#refQSecs');
+
+  if (plainBtn && plainBtn[0]) {
+    plainBtn[0].replaceWith(badge);
+  } else {
+    refAskControls.appendChild(badge);
+  }
+
+  if (plainBtn && plainBtn[1]) {
+    plainBtn[1].style.display = 'none';
+  }
+}
+
+/* ===================== 5) State ===================== */
+let uid = null;
+
+let lastGame = null;
+let rosterByKey = {};         
+
+let mySession = null;         
+let iAmPlayer = false;
+let iAmRef = false; 
+
+let unsubGame = null, unsubRoster = null, unsubChat = null, unsubSession = null;
+
+let lastActivityByKey = {};   
+let firstChatPaint = true;    
+let userPinnedToBottom = true; 
+let shouldJumpToBottomAfterSend = false;
+
+// Presence (live login)
+const ACTIVE_WINDOW_MS = 60 * 1000; 
+let lastSeenByKey = {};            
+let presenceHeartbeat = null;
+let presenceUiTick = null;
+
+const activeQuestions = new Map();   
+const timesUpSeen = new Set();      
+let timesUpTick = null;
+const timesUpPosting = new Set();
+let ensuredGameDefaults = false;
+
+function ensureTimesUpPoster(){
+  if (timesUpTick) return;
+  timesUpTick = setInterval(async () => {
+    if (!iAmRef || !resolvedGameId || isGameEnded()) return;
+    const now = Date.now();
+
+    for (const [qid, q] of activeQuestions.entries()) {
+      if (timesUpSeen.has(qid)) { 
+        activeQuestions.delete(qid);
+        continue; 
+      }
+
+      if (timesUpPosting.has(qid)) continue;
+
+      if (now >= q.expiresAtMs) {
+        const msgRef = db
+          .collection('games').doc(resolvedGameId)
+          .collection('messages').doc('timesup_' + qid);
+
+        timesUpPosting.add(qid);
+        try {
+          await msgRef.set({
+            game_id: resolvedGameId,
+            text: "Time's up!",
+            kind: 'question',
+            subkind: 'timesup',
+            related_question_id: qid,
+            author_type: 'referee',
+            display_name: (lastGame && lastGame.referee_name) || 'Referee',
+            created_at: firebase.firestore.FieldValue.serverTimestamp()
+          }, { merge: true });
+
+          timesUpSeen.add(qid);
+          activeQuestions.delete(qid);
+          shouldJumpToBottomAfterSend = true;
+        } catch (_) {
+        } finally {
+          timesUpPosting.delete(qid);
+        }
+      }
+    }
+  }, 500);
+}
+
+function maybeEnsureGameDefaults(gameId){
+  try {
+    if (ensuredGameDefaults) return;
+    if (!iAmRef) return;       
+    if (!lastGame) return;
+
+    const need = {};
+    if (typeof lastGame.chat_allowed_role === 'undefined' || lastGame.chat_allowed_role === null) {
+      need.chat_allowed_role = 'all';
+    }
+    if (Object.keys(need).length === 0) { 
+      ensuredGameDefaults = true; 
+      return; 
+    }
+
+    db.doc(`games/${gameId}`).set(need, { merge: true })
+      .then(() => { ensuredGameDefaults = true; })
+      .catch(() => { });
+  } catch {}
+}
+
+/* ===================== 6) Helpers ===================== */
+const ROLE_ORDER = ['keeper','beater','chaser','seeker'];
+
+function teamColor(team){
+  if (!lastGame) return '#ccc';
+  if (team === 'A') return lastGame.team_a_color || '#6b7d3b';
+  if (team === 'B') return lastGame.team_b_color || '#7a6b3b';
+  return '#ccc';
+}
+function updateWho(){
+  if (iAmRef) { whoIAm.textContent = 'Referee'; return; }
+  if (iAmPlayer) {
+    const nk = mySession?.name_key;
+    const display = nk && rosterByKey[nk] ? rosterByKey[nk].display_name : null;
+    whoIAm.textContent = display ? `Logged in (${display})` : 'Logged in (Player)';
+    return;
+  }
+  whoIAm.textContent = 'Spectator';
+}
+// ---- Role mute ----
+const ROLE_MAP = { all:'all', keeper:'keeper', beaters:'beater', chasers:'chaser', seeker:'seeker' };
+function labelToRoleKey(lbl){
+  return ROLE_MAP[(lbl || '').trim().toLowerCase()] || 'all';
+}
+function getMyRole(){
+  const nk = mySession?.name_key || '';
+  return nk && rosterByKey[nk]?.role ? String(rosterByKey[nk].role).toLowerCase() : null;
+}
+function allowedRoleKey(){
+  return (lastGame?.chat_allowed_role || 'all').toLowerCase();
+}
+function canIChatNow(){
+  if (iAmRef) return true;
+  if (!iAmPlayer) return false;
+  const allowed = allowedRoleKey();
+  if (allowed === 'all') return true;
+  return getMyRole() === allowed;
+}
+function humanizeRoleKey(k){
+  switch((k||'').toLowerCase()){
+    case 'keeper': return 'Keepers';
+    case 'beater': return 'Beaters';
+    case 'chaser': return 'Chasers';
+    case 'seeker': return 'Seeker';
+    default: return 'All';
+  }
+}
+function updateChatControls(){
+  if (isChatHardMuted()){
+    chatInput.disabled = true;
+    chatSend.disabled  = true;
+    chatCtrls.style.opacity = '.6';
+    chatInput.placeholder = 'Game ended — chat is closed';
+    return;
+  }
+
+  const ok = iAmRef || (iAmPlayer && canIChatNow());
+  chatInput.disabled = !ok;
+  chatSend.disabled  = !ok;
+  chatCtrls.style.opacity = ok ? '1' : '.6';
+
+  if (!ok && iAmPlayer) {
+    chatInput.placeholder = `Chat limited to: ${humanizeRoleKey(allowedRoleKey())}`;
+  } else {
+    chatInput.placeholder = 'Write a message…';
+  }
+}
+
+
+function updateLoginButton(){
+  if (iAmRef || iAmPlayer) {
+    btnToggleLogin.textContent = 'Logout';
+    loginForm?.classList.remove('active');
+    btnToggleLogin.onclick = async () => {
+      try {
+        const gameRef = db.doc(`games/${resolvedGameId}`);
+        if (mySession) {
+          const nk = mySession.name_key;
+          const meUid = uid;
+          await Promise.allSettled([
+            gameRef.collection('sessions_by_uid').doc(meUid).delete(),
+            nk ? gameRef.collection('sessions_by_name').doc(nk).delete() : Promise.resolve()
+          ]);
+        }
+        stopPresenceHeartbeat(resolvedGameId);
+        try { await auth.signOut(); } catch {}
+        try { await auth.signInAnonymously(); } catch {}
+      } catch (e) {
+        alert('Logout failed: ' + (e?.message || e));
+      }
+    };
+  } else {
+    btnToggleLogin.textContent = 'Login';
+    btnToggleLogin.onclick = () => {
+      loginForm.classList.toggle('active');
+      if (loginForm.classList.contains('active')) {
+        fullNameEl?.focus();
+        if (loginMsg) loginMsg.textContent = '';
+      }
+    };
+  }
+}
+function updateRefAskControls(){
+  const on = !!iAmRef && !isChatHardMuted();
+  [refQInput, refQSend, refQSecs, btnRoll].forEach(el => {
+    if (!el) return;
+    el.disabled = !on;
+    el.style.opacity = on ? '1' : '0.6';
+    el.style.cursor  = on ? (el.tagName === 'INPUT' ? 'text' : 'pointer') : 'not-allowed';
+  });
+}
+function dotIdForKey(k){ return 'pdot-' + String(k).replace(/\s/g,'_'); }
+function setDot(nameKey, online) {
+  const el = document.getElementById(dotIdForKey(nameKey));
+  if (!el) return;
+  el.style.background = online ? 'var(--green)' : '#bbb';
+  el.title = online ? 'Online' : 'Offline';
+}
+function updatePresenceDots(){
+  const now = Date.now();
+  Object.keys(rosterByKey).forEach(k => {
+    const ts = lastSeenByKey[k] || 0;
+    const online = ts && (now - ts) <= ACTIVE_WINDOW_MS;
+    setDot(k, !!online);
+  });
+}
+// --- Live countdown
+let qTimerInterval = null;
+
+function tickQuestionTimers() {
+  const now = Date.now();
+  const nodes = document.querySelectorAll('.q-time');
+  nodes.forEach(el => {
+    const total = parseInt(el.getAttribute('data-total') || '0', 10) || 0;
+    const start = parseInt(el.getAttribute('data-start') || '0', 10) || 0;
+    if (!total || !start) return;
+
+    const left = Math.max(0, Math.ceil(total - (now - start) / 1000));
+    if (left > 0) {
+      el.textContent = left + 's';
+    } else {
+      el.textContent = "Time's up!";
+      el.classList.add('expired');
+    }
+  });
+}
+function ensureQuestionTimerTick(){
+  if (!qTimerInterval) qTimerInterval = setInterval(tickQuestionTimers, 500);
+}
+function rollNotEqual(max, prev){
+  max = Math.max(2, (Number(max) || 6));
+  if (!Number.isFinite(prev) || prev < 1 || prev > max) {
+    return 1 + Math.floor(Math.random() * max);
+  }
+  const r = 1 + Math.floor(Math.random() * (max - 1));
+  return r >= prev ? r + 1 : r;
+}
+// --- Score controls binding ---
+function bindScoreControls(gameRef){
+  document.querySelectorAll('.score-controls').forEach(ctrl => {
+    if (ctrl.dataset.bound === '1') return;    
+    ctrl.dataset.bound = '1';
+
+    const team  = (ctrl.getAttribute('data-team') || '').toUpperCase();
+    const input = ctrl.querySelector('.ptsInput');
+
+    ctrl.querySelectorAll('.btnScore').forEach(btn => {
+btn.addEventListener('click', async () => {
+  if (!iAmRef) return;
+
+  if (ctrl.__busyGuard) return;
+  ctrl.__busyGuard = true;
+  setTimeout(() => { ctrl.__busyGuard = false; }, 400);
+
+  const raw  = (input?.value || '').trim();
+  const amt  = Math.max(1, parseInt(raw || '1', 10));
+  const sign = (btn.getAttribute('data-sign') === 'minus') ? -1 : 1;
+  const delta = amt * sign;
+
+  try {
+    const gameRef = db.doc(`games/${resolvedGameId}`);
+
+    if (team === 'A') {
+      const cur = Number(lastGame?.score_a) || 0;
+      const next = Math.max(0, cur + delta);
+      await gameRef.update({ score_a: next });
+    } else {
+      const cur = Number(lastGame?.score_b) || 0;
+      const next = Math.max(0, cur + delta);
+      await gameRef.update({ score_b: next });
+    }
+
+    if (input) input.value = '';
+  } catch (e) {
+    alert('Score update failed: ' + (e?.message || e));
+  }
+});
+    });
+  });
+
+  refreshScoreControlsEnabled();
+}
+// --- Game ending
+function isGameEnded(){
+  return String(lastGame?.game_status || '').toLowerCase() === 'ended';
+}
+function isChatHardMuted(){
+  return isGameEnded();
+}
+
+function renderGameButtons(){
+  const ended = isGameEnded();
+  if (btnEndGame)     btnEndGame.style.display     = ended ? 'none'        : 'inline-flex';
+  if (btnRestartGame) btnRestartGame.style.display = ended ? 'inline-flex' : 'none';
+
+  [btnEndGame, btnRestartGame].forEach(el => {
+    if (!el) return;
+    el.disabled    = !iAmRef;
+    el.style.opacity = iAmRef ? '1' : '0.6';
+    el.style.cursor  = iAmRef ? 'pointer' : 'not-allowed';
+  });
+}
+
+// --- Bind role pills
+function bindRolePills(gameRef){
+  const bar = refPanel?.querySelector('.toolbar');
+  if (!bar) return;
+
+  if (bar.dataset.bound === '1') return;
+  bar.dataset.bound = '1';
+
+  bar.querySelectorAll('.pill').forEach(pill => {
+    if (!pill.dataset.role) pill.dataset.role = labelToRoleKey(pill.textContent);
+    pill.addEventListener('click', async () => {
+      if (!iAmRef) return;
+      const role = pill.dataset.role || 'all';
+      const current = allowedRoleKey();
+      if (role === current) return; 
+      try {
+        await gameRef.update({ chat_allowed_role: role });
+      } catch(e){
+        alert('Failed to switch chat role: ' + (e?.message || e));
+      }
+    });
+  });
+}
+
+function renderRolePillsUI(){
+  const bar = refPanel?.querySelector('.toolbar');
+  if (!bar) return;
+  const sel = allowedRoleKey();
+  bar.querySelectorAll('.pill').forEach(p => {
+    if (!p.dataset.role) p.dataset.role = labelToRoleKey(p.textContent);
+    p.classList.toggle('active', (p.dataset.role || 'all') === sel);
+  });
+  bar.dataset.disabled = (iAmRef && !isChatHardMuted()) ? '0' : '1';
+}
+
+function refreshScoreControlsEnabled(){
+  const en = !!iAmRef;
+  document.querySelectorAll('.score-controls').forEach(ctrl => {
+    ctrl.querySelectorAll('.btnScore').forEach(b => {
+      b.disabled = !en;
+      b.style.opacity = en ? '1' : '0.6';
+      b.style.cursor  = en ? 'pointer' : 'not-allowed';
+    });
+    const input = ctrl.querySelector('.ptsInput');
+    if (input) {
+      input.disabled = !en;
+      input.style.opacity = en ? '1' : '0.6';
+      input.style.cursor  = en ? 'text' : 'not-allowed';
+    }
+  });
+}
+
+
+/* ===================== 7) Login UI (password method) ===================== */
+btnToggleLogin.onclick = () => {
+  loginForm.classList.toggle('active');
+  if (loginForm.classList.contains('active')) {
+    fullNameEl?.focus();
+    if (loginMsg) loginMsg.textContent = '';
+  }
+};
+
+// Join as player
+btnClaim.onclick = async () => {
+  if (btnClaim.__busy) return;
+  try {
+    btnClaim.__busy = true;
+    btnClaim.disabled = true;
+    if (loginMsg) loginMsg.textContent = 'Joining…';
+
+    if (iAmRef || iAmPlayer) {
+      if (loginMsg) loginMsg.textContent = 'You are already signed in. Please logout first.';
+      return;
+    }
+
+    const fullName = (fullNameEl?.value || '').trim();
+    const pwd      = (passEl?.value || '').trim();
+    const role     = (document.querySelector('input[name="role"]:checked')?.value || 'player');
+
+    if (!fullName) { if (loginMsg) loginMsg.textContent = 'Please enter your full name (as on the roster).'; return; }
+    if (!pwd)      { if (loginMsg) loginMsg.textContent = 'Please enter the password.'; return; }
+
+    const nameKey = nameKeyFromFull(fullName);
+    const gameRef = db.doc(`games/${resolvedGameId}`);
+
+    if (role === 'player') {
+      const rosterSnap = await gameRef.collection('players_by_name').doc(nameKey).get();
+      if (!rosterSnap.exists) {
+        if (loginMsg) loginMsg.textContent = 'This name is not on the roster. Please ask the organizer.';
+        return;
+      }
+    }
+
+    const nameClaimRef = gameRef.collection('sessions_by_name').doc(nameKey);
+    await nameClaimRef.set({
+      uid,
+      display_name: fullName,
+      type: role,                           // 'player' | 'referee'
+      join_secret: pwd,                    
+      ts: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    await gameRef.collection('sessions_by_uid').doc(uid).set(
+      { type: role, name_key: nameKey },
+      { merge: true }
+    );
+
+    if (role === 'referee') {
+      try { await gameRef.set({ referee_name: fullName }, { merge: true }); } catch (_) {}
+    }
+
+    if (passEl) passEl.value = '';
+    if (loginMsg) loginMsg.textContent = (role === 'referee')
+      ? 'You are now the referee.'
+      : 'Joined as player.';
+    loginForm?.classList.remove('active');
+
+  } catch (e) {
+    console.error(e);
+    if (loginMsg) {
+      loginMsg.textContent =
+        (e?.code === 'permission-denied')
+          ? 'Invalid name or password, or this name is already in use.'
+          : ('Join failed: ' + (e?.message || String(e)));
+    }
+  } finally {
+    btnClaim.__busy = false;
+    btnClaim.disabled = false;
+  }
+};
+
+passEl.addEventListener('keydown', (e) => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    btnClaim.click();
+  }
+});
+
+function startPresenceHeartbeat(gameId){
+  stopPresenceHeartbeat();
+  if (!iAmPlayer) return;
+  const nameKey = mySession?.name_key;
+  if (!nameKey) return;
+
+  const ref = db.collection('games').doc(gameId).collection('presence_by_name').doc(nameKey);
+  const beat = async () => {
+    try {
+      await ref.set({ last_seen: firebase.firestore.FieldValue.serverTimestamp() }, { merge: true });
+    } catch (_) {}
+  };
+  beat(); 
+  presenceHeartbeat = setInterval(beat, 20_000); 
+}
+
+function stopPresenceHeartbeat(gameId){
+  if (presenceHeartbeat) { clearInterval(presenceHeartbeat); presenceHeartbeat = null; }
+  try {
+    const nk = mySession?.name_key;
+    if (nk && gameId) {
+      db.collection('games').doc(gameId).collection('presence_by_name').doc(nk).delete().catch(()=>{});
+    }
+  } catch {}
+}
+
+// --- Send referee question
+refQSend && (refQSend.onclick = async () => {
+  if (!iAmRef) return;
+  const txt = (refQInput?.value || '').trim();
+  if (!txt) return;
+
+  const secsRaw = parseInt(refQSecs?.value || '', 10);
+  const secs = Number.isFinite(secsRaw) && secsRaw > 0 ? secsRaw : null;
+
+  try {
+    const messages = db.collection('games').doc(resolvedGameId).collection('messages');
+
+    const payload = {
+      game_id: resolvedGameId,
+      text: txt,
+      author_type: 'referee', 
+      display_name: (lastGame && lastGame.referee_name) || 'Referee',
+      kind: 'question',      
+      created_at: firebase.firestore.FieldValue.serverTimestamp()
+    };
+
+    if (secs) {
+      payload.timer_total_secs  = secs;
+      payload.timer_started_at  = firebase.firestore.FieldValue.serverTimestamp();
+    }
+
+    await messages.add(payload);
+
+    if (refQInput) refQInput.value = '';
+    if (refQSecs)  refQSecs.value  = '';
+
+    shouldJumpToBottomAfterSend = true;
+    chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
+  } catch (e) {
+    alert('Send failed: ' + (e?.message || e));
+  }
+});
+
+refQInput && refQInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    refQSend?.click();
+  }
+});
+
+btnRoll && (btnRoll.onclick = async () => {
+  if (!iAmRef) return;
+  if (btnRoll.__busy) return;
+  btnRoll.__busy = true;
+  btnRoll.disabled = true;
+
+  const gameRef = db.doc(`games/${resolvedGameId}`);
+
+  try {
+    const max  = Number(lastGame?.dice_max) || 6;
+    const prev = Number(lastGame?.dice_last) || null;
+    const nextVal = rollNotEqual(max, prev);
+
+    await gameRef.update({ dice_last: nextVal });
+
+    await gameRef.collection('messages').add({
+      game_id: resolvedGameId,
+      text: `Dice was rolled: ${nextVal}`,
+      author_type: 'referee',
+      display_name: (lastGame && lastGame.referee_name) || 'Referee',
+      kind: 'question',
+      created_at: firebase.firestore.FieldValue.serverTimestamp()
+    });
+
+    shouldJumpToBottomAfterSend = true;
+    chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
+  } catch (e) {
+    alert('Dice roll failed: ' + (e?.message || e));
+  } finally {
+    btnRoll.__busy = false;
+    btnRoll.disabled = !iAmRef;
+  }
+});
+
+function canIChatNow(){
+  if (isChatHardMuted()) return false;
+  if (iAmRef) return true;
+  if (!iAmPlayer) return false;
+  const allowed = allowedRoleKey();
+  if (allowed === 'all') return true;
+  return getMyRole() === allowed;
+}
+
+// End game
+btnEndGame && (btnEndGame.onclick = async () => {
+  if (!iAmRef || !resolvedGameId) return;
+  btnEndGame.disabled = true;
+  try {
+    const gameRef = db.doc(`games/${resolvedGameId}`);
+    await gameRef.set({ game_status: 'ended' }, { merge: true });
+    await gameRef.collection('messages').add({
+      game_id: resolvedGameId,
+      text: 'Game ended',
+      author_type: 'referee',
+      display_name: (lastGame && lastGame.referee_name) || 'Referee',
+      kind: 'question',
+      subkind: 'ended',
+      created_at: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    shouldJumpToBottomAfterSend = true;
+  } catch (e) {
+    alert('Failed to end game: ' + (e?.message || e));
+  } finally {
+    btnEndGame.disabled = !iAmRef;
+  }
+});
+
+btnRestartGame && (btnRestartGame.onclick = async () => {
+  if (!iAmRef || !resolvedGameId) return;
+  btnRestartGame.disabled = true;
+  try {
+    const gameRef = db.doc(`games/${resolvedGameId}`);
+    await gameRef.set({ game_status: 'active', chat_allowed_role: lastGame?.chat_allowed_role || 'all' }, { merge: true });
+    await gameRef.collection('messages').add({
+      game_id: resolvedGameId,
+      text: 'Game restarted',
+      author_type: 'referee',
+      display_name: (lastGame && lastGame.referee_name) || 'Referee',
+      kind: 'question',
+      subkind: 'restarted',
+      created_at: firebase.firestore.FieldValue.serverTimestamp()
+    });
+    shouldJumpToBottomAfterSend = true;
+  } catch (e) {
+    alert('Failed to restart: ' + (e?.message || e));
+  } finally {
+    btnRestartGame.disabled = !iAmRef;
+  }
+});
+
+/* ===================== 8) Auth boot ===================== */
+let seededDefaults = false;
+
+async function seedGameDefaults(gameId){
+  if (seededDefaults) return;
+  seededDefaults = true;
+
+  try {
+    const gameRef = db.doc(`games/${gameId}`);
+    const snap = await gameRef.get();
+    const g = snap.exists ? (snap.data() || {}) : {};
+
+    const need = {};
+    if (g.chat_allowed_role == null) need.chat_allowed_role = 'all';
+    if (!Number.isFinite(g.score_a)) need.score_a = 0;
+    if (!Number.isFinite(g.score_b)) need.score_b = 0;
+
+    if (Object.keys(need).length) {
+      await gameRef.set(need, { merge: true });
+    }
+  } catch(e){
+    console.debug('[Seed defaults] skipped:', e?.code || e);
+  }
+}
+
+setPill('stAuth', null, 'Auth…');
+auth.onAuthStateChanged(async () => {
+  try {
+    if (!auth.currentUser) await auth.signInAnonymously();
+    uid = auth.currentUser.uid;
+    setPill('stAuth','ok','Auth OK (anon)');
+
+    if (!resolvedGameId) { setPill('stGame','err','No GAME_ID'); return; }
+
+    const gameRef = db.doc(`games/${resolvedGameId}`);
+    const test = await gameRef.get();
+    if (!test.exists) { setPill('stGame','err','Game not found'); return; }
+
+    await seedGameDefaults(resolvedGameId);
+
+    setPill('stFS','ok','Firestore OK');
+
+    wireGame(resolvedGameId);
+    wireRoster(resolvedGameId);
+    wireSession(resolvedGameId);
+    wireChat(resolvedGameId);
+    wirePresence(resolvedGameId);
+  } catch (e) {
+    console.error('[Auth] Error:', e);
+    setPill('stAuth','err','Auth FAIL');
+  }
+});
+
+/* ===================== 9) Game snapshot (names, scores, emblems) ===================== */
+function wireGame(gameId){
+  if (unsubGame) unsubGame();
+  const gameRef = db.doc(`games/${gameId}`);
+
+  unsubGame = gameRef.onSnapshot(snap => {
+    try {
+      if (!snap.exists) { setPill('stGame','err','Game not found'); return; }
+      const g = snap.data() || {};
+      lastGame = g;
+
+      topAName.textContent  = g.team_a_name || 'Team A';
+      topBName.textContent  = g.team_b_name || 'Team B';
+      topAScore.textContent = Number.isFinite(g.score_a) ? g.score_a : 0;
+      topBScore.textContent = Number.isFinite(g.score_b) ? g.score_b : 0;
+
+      if (g.team_a_emblem) { emblemA.src = g.team_a_emblem; } else { emblemA.removeAttribute('src'); }
+      if (g.team_b_emblem) { emblemB.src = g.team_b_emblem; } else { emblemB.removeAttribute('src'); }
+
+      refereeBadge.textContent = g.referee_name || '—';
+
+      refEmblemA.src = emblemA.getAttribute('src') || '';
+      refEmblemB.src = emblemB.getAttribute('src') || '';
+      refTeamALabel.textContent = topAName.textContent;
+      refTeamBLabel.textContent = topBName.textContent;
+
+      if (listALabel) listALabel.textContent = topAName.textContent;
+      if (listBLabel) listBLabel.textContent = topBName.textContent;
+
+      bindScoreControls(gameRef);   
+      bindRolePills(gameRef);      
+      renderRolePillsUI();         
+      updateChatControls();
+      renderGameButtons();
+      refreshScoreControlsEnabled();
+      maybeEnsureGameDefaults(gameId);      
+
+      setPill('stGame','ok','Game OK');
+    } catch (e) {
+      console.error('[wireGame] render error:', e);
+      setPill('stGame','err','Game error');
+    }
+  }, err => {
+    console.error('[wireGame] error:', err);
+    setPill('stGame','err','Game error');
+  });
+}
+
+
+/* ===================== 10) Roster (players list) ===================== */
+function wireRoster(gameId){
+  if (unsubRoster) unsubRoster();
+  const ref = db.collection('games').doc(gameId).collection('players');
+
+  unsubRoster = ref.onSnapshot(qs => {
+    rosterByKey = {};
+    playersA.innerHTML = '';
+    playersB.innerHTML = '';
+
+    const buckets = {};
+    ROLE_ORDER.forEach(r => { buckets[r] = { A: [], B: [] }; });
+
+    qs.forEach(doc => {
+      const p   = doc.data() || {};
+      const nm  = p.display_name || 'Unknown';
+      const key = nameKeyFromFull(nm);
+      const role = (p.role || '').toLowerCase();
+
+      rosterByKey[key] = {
+        team: p.team || null,
+        role: role || null,
+        display_name: nm
+      };
+
+      const roleKey = ROLE_ORDER.includes(role) ? role : 'chaser';
+      const side = (p.team === 'A') ? 'A' : 'B';
+      buckets[roleKey][side].push({ key, name: nm, role });
+    });
+
+    const makeLi = (team, item, role) => {
+      const li = document.createElement('li');
+      const roleHtml = `<span class="role">${escapeHtml(role)}</span>`;
+
+      if (!item) {
+        if (team === 'A') {
+          li.innerHTML = `<div class="line-left">
+            <span class="dotL" style="visibility:hidden;"></span>
+            <strong>&nbsp;</strong>
+          </div>${roleHtml}`;
+        } else {
+          li.innerHTML = `${roleHtml}<div class="line-right">
+            <strong>&nbsp;</strong>
+            <span class="dotR" style="visibility:hidden;"></span>
+          </div>`;
+        }
+        return li;
+      }
+
+      const dotId = dotIdForKey(item.key);
+      if (team === 'A') {
+        li.innerHTML = `<div class="line-left">
+          <span class="dotL" id="${dotId}" style="background:#bbb;"></span>
+          <strong>${escapeHtml(item.name)}</strong>
+        </div>${roleHtml}`;
+      } else {
+        li.innerHTML = `${roleHtml}<div class="line-right">
+          <strong>${escapeHtml(item.name)}</strong>
+          <span class="dotR" id="${dotId}" style="background:#bbb;"></span>
+        </div>`;
+      }
+      return li;
+    };
+
+    ROLE_ORDER.forEach(role => {
+      const A = buckets[role].A;
+      const B = buckets[role].B;
+      const rows = Math.max(A.length, B.length);
+
+      for (let i = 0; i < rows; i++) {
+        const aItem = A[i] || null;
+        const bItem = B[i] || null;
+
+        playersA.appendChild(makeLi('A', aItem, role));
+        playersB.appendChild(makeLi('B', bItem, role));
+      }
+    });
+
+    listALabel.textContent = lastGame?.team_a_name || 'Team A';
+    listBLabel.textContent = lastGame?.team_b_name || 'Team B';
+
+    updateWho();
+    updateChatControls();
+    if (typeof updatePresenceDots === 'function') updatePresenceDots();
+  }, err => {
+    console.error('[wireRoster] error:', err);
+  });
+}
+
+
+
+  /* ===================== 11) Session ===================== */
+  function wireSession(gameId){
+    if (unsubSession) unsubSession();
+    const meRef = db.collection('games').doc(gameId).collection('sessions_by_uid').doc(uid);
+
+    unsubSession = meRef.onSnapshot(snap => {
+      mySession = snap.exists ? (snap.data() || null) : null;
+      iAmRef    = !!mySession && mySession.type === 'referee';
+      iAmPlayer = !!mySession && mySession.type === 'player';
+
+      renderRolePillsUI();
+      updateChatControls();
+      refPanel.style.display = iAmRef ? 'block' : 'none';
+      updateWho();
+      updateLoginButton();
+      updateRefAskControls();
+      renderGameButtons();
+      refreshScoreControlsEnabled();
+      maybeEnsureGameDefaults(gameId);
+
+      if (iAmPlayer) startPresenceHeartbeat(gameId);
+      else           stopPresenceHeartbeat(gameId);
+    });
+  }
+
+/* ===================== 12) Chat ===================== */
+function wireChat(gameId){
+  if (unsubChat) unsubChat();
+  const ref = db.collection('games').doc(gameId).collection('messages').orderBy('created_at','asc');
+
+  unsubChat = ref.onSnapshot(qs => {
+    const atBottomBefore = isNearBottom();
+    const forceBottom    = !!shouldJumpToBottomAfterSend;
+
+    const keepBanner = (typeof bannerLatest !== 'undefined') ? bannerLatest : null;
+    chatBox.innerHTML = '';
+    if (keepBanner) chatBox.appendChild(keepBanner);
+
+    const frag = document.createDocumentFragment();
+    let sawQuestionWithTimer = false;
+
+    if (typeof activeQuestions !== 'undefined') activeQuestions.clear();
+
+    qs.forEach(d => {
+      const m   = d.data() || {};
+      const id  = d.id;
+      const isQuestion = (m.kind === 'question');
+      const isTimesUp  = isQuestion && (m.subkind === 'timesup');
+
+      if (isTimesUp && m.related_question_id) {
+        if (typeof timesUpSeen !== 'undefined') {
+          timesUpSeen.add(String(m.related_question_id));
+        }
+      }
+
+      if (isQuestion) {
+        const div = document.createElement('div');
+        div.className = 'chat-line chat-question';
+
+        const row = document.createElement('div');
+        row.className = 'q-row';
+
+        const totalSecs = parseInt(m.timer_total_secs || '0', 10) || 0;
+        const startMs   = m.timer_started_at?.toDate
+          ? m.timer_started_at.toDate().getTime()
+          : (m.created_at?.toDate ? m.created_at.toDate().getTime() : 0);
+
+        if (!isTimesUp && totalSecs > 0 && startMs) {
+          const leftNow = Math.max(0, Math.ceil(totalSecs - (Date.now() - startMs) / 1000));
+          const t = document.createElement('span');
+          t.className = 'q-time' + (leftNow <= 0 ? ' expired' : '');
+          t.setAttribute('data-total', String(totalSecs));
+          t.setAttribute('data-start', String(startMs));
+          t.textContent = leftNow > 0 ? `${leftNow}s` : "Time's up!";
+          row.appendChild(t);
+
+          if (typeof activeQuestions !== 'undefined') {
+            const expiresAtMs = startMs + totalSecs * 1000;
+            activeQuestions.set(id, { expiresAtMs });
+          }
+          sawQuestionWithTimer = true;
+        } else {
+          const spacerLeft = document.createElement('span');
+          spacerLeft.className = 'q-spacer';
+          row.appendChild(spacerLeft);
+        }
+
+        const text = document.createElement('div');
+        text.className = 'q-text';
+        text.textContent = m.text || '';
+        row.appendChild(text);
+
+        const spacerRight = document.createElement('span');
+        spacerRight.className = 'q-spacer';
+        row.appendChild(spacerRight);
+
+        div.appendChild(row);
+        frag.appendChild(div);
+
+      } else {
+        let c = '#ccc';
+        if (m.author_type === 'referee') c = 'var(--ref)';
+        else if (m.author_team)          c = teamColor(m.author_team);
+
+        const who = m.display_name || (m.author_type === 'referee' ? 'Referee' : 'Player');
+        const div = document.createElement('div');
+        div.className = 'chat-line';
+        div.style.borderLeftColor = c;
+        div.innerHTML = `<span class="who">${escapeHtml(who)}</span> — ${escapeHtml(m.text || '')}`;
+        frag.appendChild(div);
+      }
+    });
+
+    chatBox.appendChild(frag);
+
+    if (sawQuestionWithTimer) {
+      if (typeof ensureQuestionTimerTick === 'function') {
+        ensureQuestionTimerTick();
+      } else {
+        if (!window.__qTimerInterval) {
+          window.__qTimerInterval = setInterval(() => {
+            const now = Date.now();
+            document.querySelectorAll('.q-time').forEach(el => {
+              const total = parseInt(el.getAttribute('data-total') || '0', 10) || 0;
+              const start = parseInt(el.getAttribute('data-start') || '0', 10) || 0;
+              if (!total || !start) return;
+              const left = Math.max(0, Math.ceil(total - (now - start) / 1000));
+              el.textContent = left > 0 ? (left + 's') : "Time's up!";
+              if (left <= 0) el.classList.add('expired');
+            });
+          }, 500);
+        }
+      }
+    }
+
+    if (iAmRef && typeof ensureTimesUpPoster === 'function' && typeof activeQuestions !== 'undefined' && activeQuestions.size > 0) {
+      ensureTimesUpPoster();
+    }
+
+    if (firstChatPaint || forceBottom || atBottomBefore || chatBox.scrollHeight <= chatBox.clientHeight + 4) {
+      chatBox.scrollTop = chatBox.scrollHeight;
+      if (keepBanner) keepBanner.style.display = 'none';
+      userPinnedToBottom = true;
+    } else {
+      if (keepBanner) keepBanner.style.display = 'block';
+    }
+
+    firstChatPaint = false;
+    shouldJumpToBottomAfterSend = false;
+  }, err => {
+    console.error('[wireChat] error:', err);
+  });
+}
+
+chatSend.onclick = async () => {
+  if (isChatHardMuted()){
+    alert('Game ended — chat is closed.');
+    return;
+  }
+
+  const txt = (chatInput.value || '').trim();
+  if (!txt) return;
+
+  if (!(iAmRef || iAmPlayer)) {
+    alert('Only players or the referee may send messages.');
+    return;
+  }
+
+  if (iAmPlayer && !canIChatNow()) {
+    alert(`Chat is currently limited to ${humanizeRoleKey(allowedRoleKey())}.`);
+    return;
+  }
+
+  if (typeof CHAT_MAX_LEN !== 'undefined' && txt.length > CHAT_MAX_LEN) {
+    alert(`Messages are limited to ${CHAT_MAX_LEN} characters.`);
+    return;
+  }
+
+  try {
+    const messages = db.collection('games').doc(resolvedGameId).collection('messages');
+
+    if (iAmRef) {
+      await messages.add({
+        game_id: resolvedGameId,
+        text: txt,
+        author_type: 'referee',
+        display_name: (lastGame && lastGame.referee_name) || 'Referee',
+        created_at: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    } else {
+      const nameKey = mySession?.name_key || null;
+      const roster  = nameKey ? rosterByKey[nameKey] : null;
+      if (!nameKey || !roster || !roster.team || !roster.role) {
+        alert('Your roster entry is missing. Please ask the organizer to check your name.');
+        return;
+      }
+      await messages.add({
+        game_id: resolvedGameId,
+        text: txt,
+        author_type: 'player',
+        author_name_key: nameKey,
+        author_team: roster.team,
+        author_role: roster.role,
+        display_name: roster.display_name,
+        created_at: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
+    chatInput.value = '';
+    if (typeof updateChatCounter === 'function') updateChatCounter();
+
+    shouldJumpToBottomAfterSend = true;
+    chatBox.scrollTo({ top: chatBox.scrollHeight, behavior: 'smooth' });
+
+  } catch (e) {
+    alert('Send failed: ' + (e?.message || e));
+  }
+};
+
+chatInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    if (!chatSend.disabled) chatSend.click();
+  }
+});
+
+/* ===================== 13) Presence ===================== */
+function wirePresence(gameId){
+  const col = db.collection('games').doc(gameId).collection('presence_by_name');
+
+  col.onSnapshot(qs => {
+    const tmp = {};
+    qs.forEach(doc => {
+      const d = doc.data() || {};
+      const ts = d.last_seen?.toDate ? d.last_seen.toDate().getTime() : 0;
+      if (ts) tmp[doc.id] = ts; 
+    });
+    lastSeenByKey = tmp;
+    updatePresenceDots();
+  });
+
+  if (presenceUiTick) clearInterval(presenceUiTick);
+  presenceUiTick = setInterval(updatePresenceDots, 5000);
+}
+
+window.addEventListener('beforeunload', () => stopPresenceHeartbeat(resolvedGameId));
+
+/* ===================== 14) Boot guard ===================== */
+(function(){
+  if (!resolvedGameId) setPill('stGame','err','No GAME_ID');
+})();
+</script>

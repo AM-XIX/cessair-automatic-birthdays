@@ -1,0 +1,815 @@
+<meta charset="utf-8" /><meta name="viewport" content="width=device-width,initial-scale=1" />
+<title></title>
+<style type="text/css">
+:root { --bg:rgba(255,255,255,.86); --border:#e5e7eb; --muted:#6b7280; --ok:#0a7; --err:#b00020; }
+body { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; max-width: 980px; margin: 24px auto; padding: 0 12px; color:#111; background:var(--bg); }
+h1 { margin: 0 0 8px; }
+.muted { color: var(--muted); font-size: 13px; }
+.card { border: 1px solid var(--border); border-radius: 12px; padding: 16px; margin: 16px 0; backdrop-filter: saturate(1.2); }
+.row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+label { display:block; font-weight:600; margin: 8px 0 6px; }
+input, select, button, textarea { padding: 10px; border:1px solid var(--border); border-radius:10px; font-size:14px; }
+input.w-full, select.w-full, textarea.w-full { width: 100%; }
+button { cursor: pointer; }
+button.primary { background:#111; color:#fff; border-color:#111; }
+button.ghost { background:#fff; }
+table { width:100%; border-collapse: collapse; }
+th, td { border-top:1px solid var(--border); padding: 8px; text-align:left; vertical-align: middle; }
+thead th { border-bottom:1px solid var(--border); }
+.actions { display: flex; gap: 8px; flex-wrap: wrap; margin: 8px 0; }
+.pill { padding:4px 8px; border-radius:999px; border:1px solid var(--border); font-size:12px; }
+.ok { color: var(--ok); }
+.err { color: var(--err); }
+#resultBox { display:none; border:1px dashed var(--border); border-radius:12px; padding:12px; margin-top:12px; }
+code.inline { background:#f6f8fa; border:1px solid var(--border); padding:2px 6px; border-radius:6px; }
+</style>
+
+<h1>Admin : Create a Game</h1>
+
+<p class="muted" id="me">Signing in&hellip;</p>
+
+<div class="card">
+  <h2>Sign in as Admin</h2>
+  <p class="muted" style="margin-top:-6px">Use the email you gave to Shaynelock.</p>
+  <div class="row">
+    <input id="email" placeholder="your-email@example.com" />
+    <button class="ghost" id="btnEmailLink">Send magic link</button>
+  </div>
+  <p class="muted" id="authInfo">&nbsp;</p>
+</div>
+
+<div class="card">
+  <h2>Game details</h2>
+
+  <div class="row" style="gap:16px; width:100%; align-items:flex-start;">
+    <div style="flex:1; min-width:260px">
+      <label>Team A name</label>
+      <input class="w-full" id="teamAName" value="Team A" />
+      <label>Team A emblem (image URL, optional)</label>
+      <input class="w-full" id="teamAEmblem" placeholder="https://..." />
+      <label>Team A color (HEX)</label>
+      <input id="teamAColor" type="color" value="#1E3A8A" />
+    </div>
+
+    <div style="flex:1; min-width:260px">
+      <label>Team B name</label>
+      <input class="w-full" id="teamBName" value="Team B" />
+      <label>Team B emblem (image URL, optional)</label>
+      <input class="w-full" id="teamBEmblem" placeholder="https://..." />
+      <label>Team B color (HEX)</label>
+      <input id="teamBColor" type="color" value="#B91C1C" />
+    </div>
+  </div>
+
+  <div class="row" style="gap:16px; margin-top:8px;">
+    <div style="min-width:180px;">
+      <label>Players per team</label>
+      <input id="ppt" max="50" min="1" type="number" value="7" />
+      <p class="muted">💡 Min : 1</p>
+    </div>
+
+    <div style="min-width:180px;">
+      <label>Dice number max (1 to ?)</label>
+      <input id="diceMax" min="2" max="9999" type="number" value="6" />
+      <p class="muted">💡 For WoP sites : 6</p>
+    </div>
+
+    <div style="min-width:180px;">
+      <label>Site (acronym, optional)</label>
+      <input id="siteAcr" placeholder="e.g. OFR, OUS, PDE…" />
+      <p class="muted">💡 Better to track games</p>
+    </div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>Players</h2>
+  <p class="muted">Give the <b>right</b> full name : the players will have to use the exact same name to login.</p>
+  <div class="actions">
+    <button class="ghost" id="btnAutoRows">Prepare rows (2 &times; players/team)</button>
+    <button class="ghost" id="btnAddRow">Add a row</button>
+    <button class="ghost" id="btnClearEmpty">Remove empty rows</button>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width:28px;">&nbsp;</th>
+        <th>Full name</th>
+        <th>Team</th>
+        <th>Role</th>
+      </tr>
+    </thead>
+    <tbody id="playersBody"></tbody>
+  </table>
+
+  <p class="muted">Only rows with <strong>Full name</strong> will be saved.</p>
+</div>
+
+<div class="card">
+  <h2>Passwords</h2>
+  <p class="muted">These are generated when you click “Create Game”. They are stored securely and are <em>not</em> readable by anyone else.</p>
+  <div class="row" style="gap:16px; flex-wrap:wrap">
+    <div>
+      <label>Referee password</label>
+      <input id="refPwdOut" class="w-full" readonly placeholder="Will be generated…" />
+      <button class="ghost" id="copyRefPwd">Copy</button>
+    </div>
+    <div>
+      <label>Player password</label>
+      <input id="plyPwdOut" class="w-full" readonly placeholder="Will be generated…" />
+      <button class="ghost" id="copyPlyPwd">Copy</button>
+    </div>
+  </div>
+  <p class="muted">Once generated, <b>save both passwords on a note</b> : they <u>won't be available</u> once you refresh.
+  <br><i>If you do refresh before saving them, either create the game again or contact Shaynelock (@a_m. on Discord) to get the passwords back.</i>
+  </p>
+</div>
+
+<!-- CREATE GAME -->
+<div class="card">
+  <h2>Create</h2>
+  <div class="row">
+    <button class="primary" id="create">Create Game</button>
+    <span id="status" class="muted"></span>
+  </div>
+
+  <div id="resultBox">
+    <p><strong>Game created!</strong></p>
+    <p>Copy this Game ID and paste it into your public game page:</p>
+    <div class="row" style="gap:8px;">
+      <input class="w-full" id="gameIdOut" readonly="readonly" />
+      <button class="ghost" id="copyId">Copy</button>
+    </div>
+    <p class="muted" style="margin-top:8px;">
+      Example to paste in your public page:
+      <code class="inline">const GAME_ID = "<span id="gameIdForSnippet"></span>";</code>
+    </p>
+  </div>
+</div>
+
+<!-- EDIT GAME -->
+<div class="card">
+  <h2>Edit existing Game</h2>
+  <div class="row" style="gap:8px; align-items:flex-end;">
+    <input id="editGameId" placeholder="Paste existing Game ID…" class="w-full" />
+    <button class="ghost" id="btnLoadGame">Load</button>
+    <button class="primary" id="btnUpdateGame" disabled>Update Game</button>
+  </div>
+  <p class="muted" id="editStatus">&nbsp;</p>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.3/firebase-firestore-compat.js"></script>
+<script>
+// === Firebase config ===
+const firebaseConfig = {
+  apiKey: "AIzaSyCyl03UVC3DVUMqZmd01wUdvaowZBBGYqo",
+  authDomain: "filldim-dev.firebaseapp.com",
+  projectId: "filldim-dev",
+  storageBucket: "filldim-dev.firebasestorage.app",
+  messagingSenderId: "843763394432",
+  appId: "1:843763394432:web:6cad7a2971f8df1fc68365",
+  measurementId: "G-99BQCKJS3B"
+};
+try { firebase.initializeApp(firebaseConfig); } catch(e) {}
+
+const auth = firebase.auth();
+const db   = firebase.firestore();
+
+// === Allowed organizers ===
+const ALLOWED_ORGANIZERS = [
+  // OFR
+  "shaynelock.hall@gmail.com",
+  // OUS
+  "ifeelhuerta@gmail.com",
+  // PUS
+  "meliseeverlyn@gmail.com",
+  // PDE
+  "wopleadersde@gmail.com",
+  // ODE
+  "sarah.re2000@gmail.com",
+  "kyrilldiamantis@gmail.com"
+];
+
+// === UI refs ===
+const meEl          = document.getElementById('me');
+const authInfo      = document.getElementById('authInfo');
+const emailInput    = document.getElementById('email');
+const btnEmailLink  = document.getElementById('btnEmailLink');
+
+const teamAName     = document.getElementById('teamAName');
+const teamBName     = document.getElementById('teamBName');
+const teamAEmblem   = document.getElementById('teamAEmblem');
+const teamBEmblem   = document.getElementById('teamBEmblem');
+const teamAColor    = document.getElementById('teamAColor');
+const teamBColor    = document.getElementById('teamBColor');
+
+const ppt           = document.getElementById('ppt');
+const diceMaxInput  = document.getElementById('diceMax');
+const siteAcr       = document.getElementById('siteAcr');
+
+const playersBody   = document.getElementById('playersBody');
+const btnAutoRows   = document.getElementById('btnAutoRows');
+const btnAddRow     = document.getElementById('btnAddRow');
+const btnClearEmpty = document.getElementById('btnClearEmpty');
+
+const createBtn         = document.getElementById('create');
+const statusEl          = document.getElementById('status');
+const resultBox         = document.getElementById('resultBox');
+const gameIdOut         = document.getElementById('gameIdOut');
+const copyIdBtn         = document.getElementById('copyId');
+const gameIdForSnippet  = document.getElementById('gameIdForSnippet');
+
+const refPwdOut   = document.getElementById('refPwdOut');
+const plyPwdOut   = document.getElementById('plyPwdOut');
+const copyRefPwd  = document.getElementById('copyRefPwd');
+const copyPlyPwd  = document.getElementById('copyPlyPwd');
+
+// === Helpers ===
+const ROLES    = ["keeper","beater","chaser","seeker"];
+const urlRegex = /^https?:\/\/\S+$/i;
+const hexRegex = /^#([0-9A-Fa-f]{6})$/;
+
+function toLowerSafe(s){ return (s || "").trim().toLowerCase(); }
+function setStatus(txt){ if (statusEl) statusEl.textContent = txt || ""; }
+function clampInt(v, min, max){ let n = parseInt(v,10); if (isNaN(n)) n=min; return Math.min(max, Math.max(min, n)); }
+function nameKeyFromFull(n){ return (n || "").trim().toLowerCase().replace(/\s+/g, " ").replace(/\//g, "-"); }
+function makeSecret(){
+  const a = new Uint8Array(16);
+  (window.crypto || window.msCrypto).getRandomValues(a);
+  return btoa(String.fromCharCode(...a)).replace(/\+/g,'-').replace(/\//g,'_').replace(/=+$/,'');
+}
+
+// === Color swatch UX ===
+function yiq(hex){ const r=parseInt(hex.substr(1,2),16),g=parseInt(hex.substr(3,2),16),b=parseInt(hex.substr(5,2),16); return ((r*299)+(g*587)+(b*114))/1000; }
+function paintColorInput(el){
+  const v = (el?.value || "").trim();
+  if (!hexRegex.test(v)) return;
+  el.style.background = v;
+  el.style.borderColor = "#00000022";
+  el.style.color = yiq(v) >= 150 ? "#111" : "#fff";
+}
+[teamAColor, teamBColor].forEach(el => {
+  if (!el) return;
+  paintColorInput(el);
+  el.addEventListener('input', () => paintColorInput(el));
+  el.addEventListener('change', () => paintColorInput(el));
+});
+
+// === Players table ===
+function addPlayerRow(preset) {
+  if (!playersBody) return;
+  const tr = document.createElement('tr');
+
+  const tdX = document.createElement('td');
+  const btnDel = document.createElement('button');
+  btnDel.textContent = "✕";
+  btnDel.title = "Remove row";
+  btnDel.onclick = () => tr.remove();
+  tdX.appendChild(btnDel);
+  tr.appendChild(tdX);
+
+  const tdName = document.createElement('td');
+  const inpName = document.createElement('input');
+  inpName.placeholder = "Full name";
+  inpName.value = preset?.display_name || "";
+  inpName.className = "w-full";
+  tdName.appendChild(inpName);
+  tr.appendChild(tdName);
+
+  const tdTeam = document.createElement('td');
+  const selTeam = document.createElement('select');
+  ["A","B"].forEach(v => {
+    const o = document.createElement('option'); o.value = v; o.textContent = v;
+    if ((preset?.team || "A") === v) o.selected = true;
+    selTeam.appendChild(o);
+  });
+  tdTeam.appendChild(selTeam);
+  tr.appendChild(tdTeam);
+
+  const tdRole = document.createElement('td');
+  const selRole = document.createElement('select');
+  ROLES.forEach(r => {
+    const o = document.createElement('option'); o.value = r; o.textContent = r;
+    if ((preset?.role || "chaser") === r) o.selected = true;
+    selRole.appendChild(o);
+  });
+  tdRole.appendChild(selRole);
+  tr.appendChild(tdRole);
+
+  playersBody.appendChild(tr);
+}
+function getRowsData() {
+  const rows = [];
+  if (!playersBody) return rows;
+  playersBody.querySelectorAll('tr').forEach(tr => {
+    const tds = tr.children;
+    const display_name = (tds[1]?.querySelector('input')?.value || "").trim();
+    const team         = tds[2]?.querySelector('select')?.value || "A";
+    const role         = tds[3]?.querySelector('select')?.value || "chaser";
+    if (display_name) rows.push({ display_name, team, role });
+  });
+  return rows;
+}
+function autoRows() {
+  if (!playersBody) return;
+  playersBody.innerHTML = "";
+  const perTeam = clampInt(ppt?.value, 1, 50);
+  const total = perTeam * 2;
+  for (let i=0;i<total;i++) {
+    addPlayerRow({
+      display_name: "",
+      team: i < perTeam ? "A" : "B",
+      role: ROLES[i % ROLES.length]
+    });
+  }
+}
+btnAutoRows && (btnAutoRows.onclick = autoRows);
+btnAddRow   && (btnAddRow.onclick   = () => addPlayerRow());
+btnClearEmpty && (btnClearEmpty.onclick = () => {
+  if (!playersBody) return;
+  playersBody.querySelectorAll('tr').forEach(tr => {
+    const nameVal = (tr.children[1]?.querySelector('input')?.value || "").trim();
+    if (!nameVal) tr.remove();
+  });
+});
+autoRows();
+
+// === Auth (persistance + magic link robuste) ===
+(async () => {
+  try {
+    await auth.setPersistence(firebase.auth.Auth.Persistence.LOCAL); 
+  } catch (e) {
+    console.warn('setPersistence failed:', e);
+  }
+
+  await handleEmailLinkIfPresent();
+
+  const savedPrefill = localStorage.getItem("admin_email_prefill");
+  if (savedPrefill && emailInput && !emailInput.value) emailInput.value = savedPrefill;
+})();
+
+function normEmail(v){ return (v || "").trim().toLowerCase(); }
+const CONTINUE_URL = location.origin + location.pathname; 
+
+async function handleEmailLinkIfPresent() {
+  try {
+    if (!auth.isSignInWithEmailLink(window.location.href)) return;
+
+    const saved = localStorage.getItem("admin_email") || prompt("Type your email again to finish sign-in:");
+    if (!saved) return;
+
+    try {
+      await auth.signInWithEmailLink(saved, window.location.href);
+    } catch (err) {
+      if (auth.currentUser && auth.currentUser.isAnonymous) {
+        const cred = firebase.auth.EmailAuthProvider.credentialWithLink(saved, window.location.href);
+        await auth.currentUser.linkWithCredential(cred);
+      } else {
+        alert("Magic link error: " + err.message);
+        throw err;
+      }
+    } finally {
+      localStorage.removeItem("admin_email");
+      history.replaceState({}, document.title, location.pathname); 
+      alert("Signed in!");
+    }
+  } catch(e) {
+    alert("Magic link error: " + e.message);
+  }
+}
+
+btnEmailLink && (btnEmailLink.onclick = async () => {
+  const em = normEmail(emailInput?.value);
+  if (!em) return alert("Please enter a valid email.");
+  try {
+    await auth.sendSignInLinkToEmail(em, { url: CONTINUE_URL, handleCodeInApp: true });
+    localStorage.setItem("admin_email", em);
+    localStorage.setItem("admin_email_prefill", em);
+    alert("Magic link sent. Open it on this device.");
+  } catch(e) { alert(e.message); }
+});
+
+auth.onAuthStateChanged(async (u) => {
+  if (meEl)     meEl.textContent = u?.email ? `Signed in: ${u.email}` : (u ? `Signed in (anonymous): ${u.uid.slice(0,6)}` : "Signed out");
+  if (authInfo) authInfo.textContent = u?.email ? "Ready to create a game." : "Use your organizer email first.";
+  if (u?.email) {
+    localStorage.setItem("admin_email_prefill", u.email);
+    if (emailInput && !emailInput.value) emailInput.value = u.email;
+  }
+});
+
+// === Create game ===
+createBtn && (createBtn.onclick = async () => {
+  try {
+    setStatus("Creating…");
+    if (!auth.currentUser) { alert("Please sign in first."); setStatus("Please sign in."); return; }
+
+    await auth.currentUser.getIdToken(true);
+    const myEmail = (auth.currentUser.email || "").trim().toLowerCase();
+    if (!ALLOWED_ORGANIZERS.includes(myEmail)) {
+      alert(`This email is not allowed to create games: ${myEmail || "none"}`);
+      setStatus("Organizer email required.");
+      return;
+    }
+
+    const perTeam = clampInt(ppt?.value, 1, 50);
+    const tA = (teamAName?.value || "Team A").trim();
+    const tB = (teamBName?.value || "Team B").trim();
+
+    const emblemA = (teamAEmblem?.value || "").trim();
+    const emblemB = (teamBEmblem?.value || "").trim();
+    if (emblemA && !urlRegex.test(emblemA)) { alert("Team A emblem must be a valid URL (or leave empty)."); setStatus(""); return; }
+    if (emblemB && !urlRegex.test(emblemB)) { alert("Team B emblem must be a valid URL (or leave empty)."); setStatus(""); return; }
+
+    let colorA = (teamAColor?.value || "").trim();
+    let colorB = (teamBColor?.value || "").trim();
+    if (colorA && !hexRegex.test(colorA)) { alert("Team A color must be a HEX like #RRGGBB."); setStatus(""); return; }
+    if (colorB && !hexRegex.test(colorB)) { alert("Team B color must be a HEX like #RRGGBB."); setStatus(""); return; }
+
+    let site = (siteAcr?.value || "").trim();
+    if (site) {
+      site = site.toUpperCase();
+      if (!/^[A-Z]{2,8}$/.test(site)) { alert("Site acronym must be 2–8 letters."); setStatus(""); return; }
+    } else site = "";
+
+    const diceMax = clampInt(diceMaxInput?.value, 2, 9999);
+
+    const players = getRowsData();
+    if (players.length === 0) { alert("Add at least one player."); setStatus(""); return; }
+
+    const seenKeys = new Set();
+    for (const p of players) {
+      if (!p.display_name) { alert("All players must have a full name."); setStatus(""); return; }
+      if (!['A','B'].includes(p.team)) { alert(`Invalid team for ${p.display_name}`); setStatus(""); return; }
+      if (!ROLES.includes(p.role))     { alert(`Invalid role for ${p.display_name}`); setStatus(""); return; }
+      const k = nameKeyFromFull(p.display_name);
+      if (seenKeys.has(k)) { alert(`Duplicate player name (normalized): "${p.display_name}". Use unique names.`); setStatus(""); return; }
+      seenKeys.add(k);
+    }
+
+    const countA = players.filter(p => p.team === "A").length;
+    const countB = players.filter(p => p.team === "B").length;
+    if (countA > perTeam || countB > perTeam) {
+      if (!confirm(`You set ${perTeam} players per team, but you entered A:${countA}, B:${countB}. Continue anyway?`)) {
+        setStatus("Cancelled."); return;
+      }
+    }
+
+    createBtn.disabled = true;
+
+    const gameRef = db.collection("games").doc();
+    const gameId  = gameRef.id;
+
+    await gameRef.set({
+      title: "Capture the Flag",
+      players_per_team: perTeam,
+      team_a_name: tA,
+      team_b_name: tB,
+      team_a_emblem: emblemA,
+      team_b_emblem: emblemB,
+      team_a_color: colorA || "",
+      team_b_color: colorB || "",
+      score_a: 0,
+      score_b: 0,
+      referee_uid: null,
+      site_acronym: site,
+      dice_max: diceMax,
+      chat_allowed_role: 'all',     
+      game_status: 'active',       
+      created_at: firebase.firestore.FieldValue.serverTimestamp(),
+      created_by: myEmail
+    });
+
+    await Promise.all(
+      ROLES.map(r => gameRef.collection("mutes_by_role").doc(r).set({ is_muted: false }))
+    );
+
+    const refSecret = makeSecret();
+    const plySecret = makeSecret();
+    await gameRef.collection("secrets").doc("join").set({
+      player_password:  plySecret,
+      referee_password: refSecret
+    });
+
+    const batch = db.batch();
+    const playersColl = gameRef.collection("players");
+    const pbnColl     = gameRef.collection("players_by_name");
+
+    players.forEach(p => {
+      const key = nameKeyFromFull(p.display_name);
+      const pRef = playersColl.doc();
+      batch.set(pRef, {
+        display_name: p.display_name,
+        display_name_lower: toLowerSafe(p.display_name),
+        team: p.team,
+        role: p.role,
+        session_uid: null,
+        game_id: gameId,
+        created_at: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      const idxRef = pbnColl.doc(key);
+      batch.set(idxRef, {
+        player_id: pRef.id,
+        display_name: p.display_name,
+        display_name_lower: toLowerSafe(p.display_name),
+        team: p.team,
+        role: p.role,
+        created_at: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    });
+
+    await batch.commit();
+
+    if (gameIdOut)        gameIdOut.value = gameId;
+    if (gameIdForSnippet) gameIdForSnippet.textContent = gameId;
+    if (resultBox)        resultBox.style.display = "block";
+
+    if (refPwdOut) refPwdOut.value = refSecret;
+    if (plyPwdOut) plyPwdOut.value = plySecret;
+
+    alert("Game created! Copy the ID and the passwords.");
+    setStatus("Done.");
+  } catch (e) {
+    console.error(e);
+    alert("Error: " + (e.message || e));
+    setStatus("Error.");
+  } finally {
+    if (createBtn) createBtn.disabled = false;
+  }
+});
+
+// === Copy helpers ===
+copyIdBtn && (copyIdBtn.onclick = async () => {
+  const val = (gameIdOut?.value || "").trim();
+  if (!val) return;
+  try { await navigator.clipboard.writeText(val); alert("Game ID copied!"); }
+  catch { alert("Could not copy. Please select and copy it manually."); }
+});
+copyRefPwd && (copyRefPwd.onclick = async () => {
+  const val = (refPwdOut?.value || "").trim();
+  if (!val) return;
+  try { await navigator.clipboard.writeText(val); alert("Referee password copied!"); }
+  catch { alert("Could not copy. Please select and copy it manually."); }
+});
+copyPlyPwd && (copyPlyPwd.onclick = async () => {
+  const val = (plyPwdOut?.value || "").trim();
+  if (!val) return;
+  try { await navigator.clipboard.writeText(val); alert("Player password copied!"); }
+  catch { alert("Could not copy. Please select and copy it manually."); }
+});
+
+// =================== EDIT MODE (load + update) ===================
+const editGameIdInput = document.getElementById('editGameId');
+const btnLoadGame     = document.getElementById('btnLoadGame');
+const btnUpdateGame   = document.getElementById('btnUpdateGame');
+const editStatus      = document.getElementById('editStatus');
+
+let editCtx = {
+  gameId: null,
+  gameRef: null,
+  existingByKey: {} 
+};
+
+function setEditStatus(t){ if (editStatus) editStatus.textContent = t || ''; }
+
+async function ensureOrganizer(){
+  if (!auth.currentUser) throw new Error('Please sign in first.');
+  const em = (auth.currentUser.email || '').trim().toLowerCase();
+  if (!ALLOWED_ORGANIZERS.includes(em)){
+    throw new Error(`This email is not allowed to edit games: ${em || "none"}`);
+  }
+}
+
+function fillGameForm(g){
+  teamAName.value   = (g.team_a_name || 'Team A');
+  teamBName.value   = (g.team_b_name || 'Team B');
+  teamAEmblem.value = (g.team_a_emblem || '');
+  teamBEmblem.value = (g.team_b_emblem || '');
+  teamAColor.value  = (g.team_a_color || '#1E3A8A');
+  teamBColor.value  = (g.team_b_color || '#B91C1C');
+  paintColorInput(teamAColor);
+  paintColorInput(teamBColor);
+
+  ppt.value         = Number.isFinite(g.players_per_team) ? g.players_per_team : 7;
+  diceMaxInput.value= Number.isFinite(g.dice_max) ? g.dice_max : 6;
+  siteAcr.value     = g.site_acronym || '';
+}
+
+async function loadRosterIntoTable(gameRef){
+  playersBody.innerHTML = '';
+  editCtx.existingByKey = {};
+
+  const pbnSnap = await gameRef.collection('players_by_name').get();
+  const items = [];
+  pbnSnap.forEach(d => {
+    const x = d.data() || {};
+    items.push({
+      key: d.id,
+      player_id: x.player_id,
+      display_name: x.display_name || '',
+      team: x.team || 'A',
+      role: (x.role || 'chaser')
+    });
+  });
+  const roleOrder = { keeper:0, beater:1, chaser:2, seeker:3 };
+  items.sort((a,b) =>
+    (a.team === b.team ? 0 : (a.team === 'A' ? -1 : 1)) ||
+    ((roleOrder[a.role] ?? 9) - (roleOrder[b.role] ?? 9)) ||
+    a.display_name.localeCompare(b.display_name, undefined, { sensitivity:'base' })
+  );
+
+  for (const it of items){
+    addPlayerRow({ display_name: it.display_name, team: it.team, role: it.role });
+    editCtx.existingByKey[it.key] = {
+      player_id: it.player_id,
+      pRef: gameRef.collection('players').doc(it.player_id),
+      pbnRef: gameRef.collection('players_by_name').doc(it.key),
+      display_name: it.display_name,
+      team: it.team,
+      role: it.role
+    };
+  }
+}
+
+btnLoadGame && (btnLoadGame.onclick = async () => {
+  try {
+    await ensureOrganizer();
+    const id = (editGameIdInput?.value || '').trim();
+    if (!id) { setEditStatus('Enter a Game ID.'); return; }
+
+    setEditStatus('Loading…');
+    const gameRef = db.collection('games').doc(id);
+    const snap = await gameRef.get();
+    if (!snap.exists) { setEditStatus('Game not found.'); btnUpdateGame.disabled = true; return; }
+
+    const g = snap.data() || {};
+    editCtx.gameId = id;
+    editCtx.gameRef = gameRef;
+
+    fillGameForm(g);
+
+    await loadRosterIntoTable(gameRef);
+
+    if (gameIdOut)        gameIdOut.value = id;
+    if (gameIdForSnippet) gameIdForSnippet.textContent = id;
+    if (resultBox)        resultBox.style.display = 'block';
+
+    btnUpdateGame.disabled = false;
+    setEditStatus('Game loaded — you can edit and press "Update Game".');
+  } catch (e) {
+    console.error(e);
+    setEditStatus('Load failed: ' + (e?.message || e));
+    btnUpdateGame.disabled = true;
+  }
+});
+
+function validateGameDetails(){
+  const emblemA = (teamAEmblem?.value || '').trim();
+  const emblemB = (teamBEmblem?.value || '').trim();
+  if (emblemA && !urlRegex.test(emblemA)) throw new Error('Team A emblem must be a valid URL (or leave empty).');
+  if (emblemB && !urlRegex.test(emblemB)) throw new Error('Team B emblem must be a valid URL (or leave empty).');
+
+  const colorA = (teamAColor?.value || '').trim();
+  const colorB = (teamBColor?.value || '').trim();
+  if (colorA && !hexRegex.test(colorA)) throw new Error('Team A color must be a HEX like #RRGGBB.');
+  if (colorB && !hexRegex.test(colorB)) throw new Error('Team B color must be a HEX like #RRGGBB.');
+
+  let site = (siteAcr?.value || '').trim();
+  if (site) {
+    site = site.toUpperCase();
+    if (!/^[A-Z]{2,8}$/.test(site)) throw new Error('Site acronym must be 2–8 letters.');
+  }
+
+  return {
+    team_a_name: (teamAName?.value || 'Team A').trim(),
+    team_b_name: (teamBName?.value || 'Team B').trim(),
+    team_a_emblem: emblemA,
+    team_b_emblem: emblemB,
+    team_a_color: colorA || '',
+    team_b_color: colorB || '',
+    players_per_team: clampInt(ppt?.value, 1, 50),
+    dice_max: clampInt(diceMaxInput?.value, 2, 9999),
+    site_acronym: site || ''
+  };
+}
+
+btnUpdateGame && (btnUpdateGame.onclick = async () => {
+  if (!editCtx.gameRef) { setEditStatus('Load a game first.'); return; }
+
+  try {
+    await ensureOrganizer();
+    btnUpdateGame.disabled = true;
+    setEditStatus('Updating…');
+
+    const meta = validateGameDetails();
+    await editCtx.gameRef.set({
+      team_a_name: meta.team_a_name,
+      team_b_name: meta.team_b_name,
+      team_a_emblem: meta.team_a_emblem,
+      team_b_emblem: meta.team_b_emblem,
+      team_a_color: meta.team_a_color,
+      team_b_color: meta.team_b_color,
+      players_per_team: meta.players_per_team,
+      dice_max: meta.dice_max,
+      site_acronym: meta.site_acronym,
+      updated_at: firebase.firestore.FieldValue.serverTimestamp()
+    }, { merge: true });
+
+    const rows = getRowsData();
+    if (rows.length === 0) throw new Error('Add at least one player.');
+
+    const seen = new Set();
+    for (const p of rows){
+      if (!p.display_name) throw new Error('All players must have a full name.');
+      if (!['A','B'].includes(p.team)) throw new Error(`Invalid team for ${p.display_name}`);
+      if (!ROLES.includes(p.role))     throw new Error(`Invalid role for ${p.display_name}`);
+      const k = nameKeyFromFull(p.display_name);
+      if (seen.has(k)) throw new Error(`Duplicate player name (normalized): "${p.display_name}". Use unique names.`);
+      seen.add(k);
+    }
+
+    const batch = db.batch();
+    const playersColl = editCtx.gameRef.collection('players');
+    const pbnColl     = editCtx.gameRef.collection('players_by_name');
+
+    const newByKey = {};
+    rows.forEach(p => {
+      const key = nameKeyFromFull(p.display_name);
+      newByKey[key] = {
+        key,
+        display_name: p.display_name,
+        display_name_lower: toLowerSafe(p.display_name),
+        team: p.team,
+        role: p.role
+      };
+    });
+
+    for (const key of Object.keys(newByKey)){
+      const cur = newByKey[key];
+      const existed = editCtx.existingByKey[key];
+
+      if (existed){
+        batch.set(existed.pRef, {
+          display_name: cur.display_name,
+          display_name_lower: cur.display_name_lower,
+          team: cur.team,
+          role: cur.role
+        }, { merge: true });
+
+        batch.set(existed.pbnRef, {
+          player_id: existed.player_id,
+          display_name: cur.display_name,
+          display_name_lower: cur.display_name_lower,
+          team: cur.team,
+          role: cur.role
+        }, { merge: true });
+
+      } else {
+        // CREATE new players
+        const pRef = playersColl.doc();
+        batch.set(pRef, {
+          display_name: cur.display_name,
+          display_name_lower: cur.display_name_lower,
+          team: cur.team,
+          role: cur.role,
+          session_uid: null,
+          game_id: editCtx.gameId,
+          created_at: firebase.firestore.FieldValue.serverTimestamp()
+        });
+
+        const idxRef = pbnColl.doc(key);
+        batch.set(idxRef, {
+          player_id: pRef.id,
+          display_name: cur.display_name,
+          display_name_lower: cur.display_name_lower,
+          team: cur.team,
+          role: cur.role,
+          created_at: firebase.firestore.FieldValue.serverTimestamp()
+        });
+      }
+    }
+
+    for (const oldKey of Object.keys(editCtx.existingByKey)){
+      if (newByKey[oldKey]) continue; 
+      const ex = editCtx.existingByKey[oldKey];
+      batch.delete(ex.pbnRef);
+      batch.delete(ex.pRef);
+    }
+
+    await batch.commit();
+
+    setEditStatus('Updated ✅');
+
+    await loadRosterIntoTable(editCtx.gameRef);
+
+  } catch (e) {
+    console.error(e);
+    setEditStatus('Update failed: ' + (e?.message || e));
+  } finally {
+    btnUpdateGame.disabled = false;
+  }
+});
+</script>
