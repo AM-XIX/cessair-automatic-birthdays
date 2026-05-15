@@ -4130,6 +4130,24 @@
                 "stock": "0",
                 "maxOwned": "1",
                 "position": "64"
+            },
+            {
+                "itemId": "a1a42055-d05b-4a7b-868d-9b72efa2bc19",
+                "shopId": "f79546f1-4a07-4bd4-ba21-80ef5fc066fa",
+                "shopName": "Hidden shop",
+                "itemName": "Casquette Maestria",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/55e0e35b-6379-486b-8459-723aaf1148dc.webp",
+                "localImagePath": "Items/Images/Hidden_shop/Casquette_Maestria.webp",
+                "generalCategory": "Wearable",
+                "shopCategory": "Aucun",
+                "itemDescription": "<p>Les matchs de Capture l'Étendard en plein soleil, ce n'est jamais agréable. Cette casquette vous donnera un style inimitable, vous préservera de l'insolation et vous pourrez supporter les artistes de Maestria à n'importe quel moment de la journée ! Cette casquette n'est pas exactement comme les autres…</p>",
+                "priceBronze": "0",
+                "priceSilver": "0",
+                "priceGold": "1000000000",
+                "isGiftable": "Yes",
+                "stock": "0",
+                "maxOwned": "1",
+                "position": "78"
             }
         ]
     },
@@ -5158,6 +5176,42 @@
                 "stock": "",
                 "maxOwned": "0",
                 "position": "8"
+            },
+            {
+                "itemId": "a19d5406-ebdf-48dc-a7c2-401b0e676600",
+                "shopId": "8c4bd9c4-32f0-4785-bc22-8355ed05be61",
+                "shopName": "L'échoppe de Dionysos",
+                "itemName": "Pumpkin spice latte",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/fe31bb16-987e-4414-a334-bc458f3df485.webp",
+                "localImagePath": "Items/Images/L'échoppe_de_Dionysos/Pumpkin_spice_latte.webp",
+                "generalCategory": "Boire",
+                "shopCategory": "Boissons chaudes",
+                "itemDescription": "<p>Même si leur popularité revient en force à l'approche d'Halloween, les pumpkin spice latte n'ont pas besoin d'une date précise pour être délicieux. Alors qu'on soit en octobre, ou en plein milieu du printemps, foncez en boire un !</p>",
+                "priceBronze": "10",
+                "priceSilver": "10",
+                "priceGold": "15",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "76"
+            },
+            {
+                "itemId": "a19d5968-0650-4cf6-aa5c-f71b047b0d71",
+                "shopId": "8c4bd9c4-32f0-4785-bc22-8355ed05be61",
+                "shopName": "L'échoppe de Dionysos",
+                "itemName": "Matcha latte",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/24b94aea-e85c-481b-ab29-bf0baaaf1bbb.webp",
+                "localImagePath": "Items/Images/L'échoppe_de_Dionysos/Matcha_latte.webp",
+                "generalCategory": "Boire",
+                "shopCategory": "Boissons chaudes",
+                "itemDescription": "<p>Si vous êtes de la team « j'aime le matcha », voici un breuvage qui ravira vos papilles ! Si au contraire vous appartenez à l'autre clan, passez votre chemin, ceci risque de heurter votre sensibilité !</p>",
+                "priceBronze": "0",
+                "priceSilver": "0",
+                "priceGold": "18",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "77"
             }
         ]
     },
@@ -6126,7 +6180,24 @@
         "shopId": "65796c5b-e37f-4edb-b067-8355ed060021",
         "shopName": "Le bâton d'Asclépios",
         "shopDescription": "<p>Le bâton d'Asclépios est <b>LA</b>&nbsp;boutique pour tout demi-dieu qui souhaiterait survivre aux aléas de la vie. Des pansements aux vitamines, vous y trouverez un large choix de produits de santé et de survie.</p>",
-        "categories": [],
+        "categories": [
+            {
+                "categoryName": "Fauteuils roulants",
+                "categoryDescription": "Cette catégorie comprend tous les fauteuils roulants."
+            },
+            {
+                "categoryName": "Outils médicaux",
+                "categoryDescription": "Cette catégorie comprend tous les outils médicaux."
+            },
+            {
+                "categoryName": "Pilules",
+                "categoryDescription": "Cette catégorie comprend toutes les pilules."
+            },
+            {
+                "categoryName": "Bandages & Pansements",
+                "categoryDescription": "Cette catégorie comprend tous les bandages et pansements."
+            }
+        ],
         "items": [
             {
                 "itemId": "0ecca295-ee92-4f1a-ad7e-928ab4a5b115",
@@ -6469,6 +6540,78 @@
                 "stock": "",
                 "maxOwned": "0",
                 "position": "8"
+            },
+            {
+                "itemId": "a19d4caf-e17f-4dcb-b321-fde31829f624",
+                "shopId": "65796c5b-e37f-4edb-b067-8355ed060021",
+                "shopName": "Le bâton d'Asclépios",
+                "itemName": "Fauteuil roulant jaune",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/367214c4-aeed-4ef5-9af7-e487d6d78b73.png",
+                "localImagePath": "Items/Images/Le_bâton_d'Asclépios/Fauteuil_roulant_jaune.png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Fauteuils roulants",
+                "itemDescription": "<p>Un fauteuil roulant aussi optimal qu'élégant qui vous emmènera partout où ses roues peuvent rouler. De quoi frimer à la Colonie en toute mobilité.</p>",
+                "priceBronze": "0",
+                "priceSilver": "9",
+                "priceGold": "399",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "72"
+            },
+            {
+                "itemId": "a19d4cdb-2ef8-444d-9f9f-894541f1cd00",
+                "shopId": "65796c5b-e37f-4edb-b067-8355ed060021",
+                "shopName": "Le bâton d'Asclépios",
+                "itemName": "Fauteuil roulant rouge",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/6865e3a2-5420-4c56-99df-78f7182fdd07.png",
+                "localImagePath": "Items/Images/Le_bâton_d'Asclépios/Fauteuil_roulant_rouge.png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Fauteuils roulants",
+                "itemDescription": "<p>Un fauteuil roulant aussi optimal qu'élégant qui vous emmènera partout où ses roues peuvent rouler. De quoi frimer à la Colonie en toute mobilité.</p>",
+                "priceBronze": "0",
+                "priceSilver": "9",
+                "priceGold": "399",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "73"
+            },
+            {
+                "itemId": "a19d4d0c-8082-4e5f-abfb-7d7921e0e05f",
+                "shopId": "65796c5b-e37f-4edb-b067-8355ed060021",
+                "shopName": "Le bâton d'Asclépios",
+                "itemName": "Fauteuil roulant cyan",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/c0bfb4f1-c6e9-4a1d-8234-284cb46a544e.png",
+                "localImagePath": "Items/Images/Le_bâton_d'Asclépios/Fauteuil_roulant_cyan.png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Fauteuils roulants",
+                "itemDescription": "<p>Un fauteuil roulant aussi optimal qu'élégant qui vous emmènera partout où ses roues peuvent rouler. De quoi frimer à la Colonie en toute mobilité.</p>",
+                "priceBronze": "0",
+                "priceSilver": "9",
+                "priceGold": "399",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "74"
+            },
+            {
+                "itemId": "a19d4d3d-5f93-49d9-b1c5-6e0c7ea7228f",
+                "shopId": "65796c5b-e37f-4edb-b067-8355ed060021",
+                "shopName": "Le bâton d'Asclépios",
+                "itemName": "Fauteuil roulant rose",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/ee3462ac-f68f-4217-9e80-d1cad3c511ee.png",
+                "localImagePath": "Items/Images/Le_bâton_d'Asclépios/Fauteuil_roulant_rose.png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Fauteuils roulants",
+                "itemDescription": "<p>Un fauteuil roulant aussi optimal qu'élégant qui vous emmènera partout où ses roues peuvent rouler. De quoi frimer à la Colonie en toute mobilité.</p>",
+                "priceBronze": "0",
+                "priceSilver": "9",
+                "priceGold": "399",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "75"
             }
         ]
     },
@@ -8677,6 +8820,10 @@
             {
                 "categoryName": "Vestes et Manteaux",
                 "categoryDescription": "Cette catégorie comprend tous les vestes et manteaux."
+            },
+            {
+                "categoryName": "Sacs",
+                "categoryDescription": "Cette catégorie comprend tous les sacs."
             }
         ],
         "items": [
@@ -10065,6 +10212,42 @@
                 "stock": "",
                 "maxOwned": "0",
                 "position": "8"
+            },
+            {
+                "itemId": "a19d2325-a7b4-4ce7-bee8-5e34cfcc4990",
+                "shopId": "06e82eac-69f1-41a3-935d-3b11d8a7eee8",
+                "shopName": "Les étoles d'Arachné",
+                "itemName": "Sac banane Poisson",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/d5ef99d1-f5b2-4144-a75e-038f84e47dcf.png",
+                "localImagePath": "Items/Images/Les_étoles_d'Arachné/Sac_banane_Poisson.png",
+                "generalCategory": "Wearable",
+                "shopCategory": "Sacs",
+                "itemDescription": "<p>Ce sac banane original vous suivra de partout et saura taper dans l'oeil de tout vos ennemis qui voudront vous l'arracher !</p>",
+                "priceBronze": "0",
+                "priceSilver": "6",
+                "priceGold": "32",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "70"
+            },
+            {
+                "itemId": "a19d2364-4faa-4aa7-85eb-fdabf6f6ef04",
+                "shopId": "06e82eac-69f1-41a3-935d-3b11d8a7eee8",
+                "shopName": "Les étoles d'Arachné",
+                "itemName": "Sac banane Grenouille",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/57cbfb26-b2f6-4a92-a35b-1f83fd05f8f5.png",
+                "localImagePath": "Items/Images/Les_étoles_d'Arachné/Sac_banane_Grenouille.png",
+                "generalCategory": "Wearable",
+                "shopCategory": "Sacs",
+                "itemDescription": "<p>Ce sac banane original vous suivra de partout et saura taper dans l'oeil de tout vos ennemis qui voudront vous l'arracher !</p>",
+                "priceBronze": "0",
+                "priceSilver": "6",
+                "priceGold": "32",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "71"
             }
         ]
     },
@@ -10922,6 +11105,42 @@
                 "stock": "",
                 "maxOwned": "0",
                 "position": "8"
+            },
+            {
+                "itemId": "e03854b5-b2a8-4209-a2be-92ad98e52a65",
+                "shopId": "fa490084-12be-4834-af42-8355ed05b1b4",
+                "shopName": "Les péchés de Tantale",
+                "itemName": "Tranche de Cheesecake",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/shop/items/phphI9pCW_60208109597fb6_04258319.webp",
+                "localImagePath": "Items/Images/Les_péchés_de_Tantale/Tranche_de_Cheesecake.webp",
+                "generalCategory": "Nourriture",
+                "shopCategory": "Pâtisseries",
+                "itemDescription": "<p>Une tranche d'un gâteau aussi mythique que son nom : le cheesecake ! Les amateurs de mélanges, aux abris ! Cette oeuvre d'art combine fromage frais et coulis de frambroise... un vrai délice.</p>",
+                "priceBronze": "6",
+                "priceSilver": "3",
+                "priceGold": "2",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "8"
+            },
+            {
+                "itemId": "a19d1c06-2a81-4631-8e69-7839188011ac",
+                "shopId": "fa490084-12be-4834-af42-8355ed05b1b4",
+                "shopName": "Les péchés de Tantale",
+                "itemName": "Scones",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/c96308be-22f4-4c84-96ef-bc9f11d7576b.png",
+                "localImagePath": "Items/Images/Les_péchés_de_Tantale/Scones.png",
+                "generalCategory": "Nourriture",
+                "shopCategory": "Pâtisseries",
+                "itemDescription": "<p>Ces biscuits typiquement anglais sont fourrés d'une délicieuse confiture à la fraise et saupoudrés de sucre glace qui ne demande qu'a être dégusté.</p>",
+                "priceBronze": "3",
+                "priceSilver": "0",
+                "priceGold": "7",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "65"
             }
         ]
     },
@@ -14995,8 +15214,8 @@
         "shopDescription": "<p>Tout le matériel nécessaire pour être le champion du Capture Etendard se trouve dans cette seule et unique boutique ! Pour encourager vos équipes favorites ou porter les couleurs de vos parents divins, il n'y a qu'un arrêt, Sport'Actus.</p>",
         "categories": [
             {
-                "categoryName": "Ballons",
-                "categoryDescription": "Cette catégorie comprend tous les ballons."
+                "categoryName": "Balles & Ballons",
+                "categoryDescription": "Cette catégorie comprend toutes les balles et tous les ballons."
             },
             {
                 "categoryName": "Étendards",
@@ -15005,6 +15224,14 @@
             {
                 "categoryName": "Chasubles",
                 "categoryDescription": "Cette catégorie comprend tous les chasubles."
+            },
+            {
+                "categoryName": "Accessoires de Supporter",
+                "categoryDescription": "Cette catégorie comprend tous les accessoires de Supporter."
+            },
+            {
+                "categoryName": "Équipement de sport",
+                "categoryDescription": "Cette catégorie comprend tous les équipements de sport."
             }
         ],
         "items": [
@@ -15853,6 +16080,78 @@
                 "stock": "",
                 "maxOwned": "0",
                 "position": "8"
+            },
+            {
+                "itemId": "a19d2072-47eb-403e-867e-321a5324573a",
+                "shopId": "9d01d87d-aab2-426f-a877-8355ed05d445",
+                "shopName": "Sport'acus",
+                "itemName": "Gant en mousse Polémos",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/f20f244e-7aeb-4924-9697-bb494683c6f7.png",
+                "localImagePath": "Items/Images/Sport'acus/Gant_en_mousse_Polémos.png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Accessoires de Supporter",
+                "itemDescription": "<p>Les gants en mousse sont super pour montrer votre soutien à une équipe. Attention aux yeux des autres !&nbsp;</p>",
+                "priceBronze": "2",
+                "priceSilver": "8",
+                "priceGold": "6",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "66"
+            },
+            {
+                "itemId": "a19d20a6-250a-4c39-9e31-083f803d48c5",
+                "shopId": "9d01d87d-aab2-426f-a877-8355ed05d445",
+                "shopName": "Sport'acus",
+                "itemName": "Gant en mousse Agapè",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/38c24c75-e811-44d1-b367-204600644e50.png",
+                "localImagePath": "Items/Images/Sport'acus/Gant_en_mousse_Agapè.png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Accessoires de Supporter",
+                "itemDescription": "<p>Les gants en mousse sont super pour montrer votre soutien à une équipe. Attention aux yeux des autres !&nbsp;</p>",
+                "priceBronze": "2",
+                "priceSilver": "8",
+                "priceGold": "6",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "67"
+            },
+            {
+                "itemId": "a19d20d1-67d1-41d3-be03-0915e0956f97",
+                "shopId": "9d01d87d-aab2-426f-a877-8355ed05d445",
+                "shopName": "Sport'acus",
+                "itemName": "Gant en mousse Maestria",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/4aa60757-258c-4277-93fd-c4aa8694a502.png",
+                "localImagePath": "Items/Images/Sport'acus/Gant_en_mousse_Maestria.png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Accessoires de Supporter",
+                "itemDescription": "<p>Les gants en mousse sont super pour montrer votre soutien à une équipe. Attention aux yeux des autres !&nbsp;</p>",
+                "priceBronze": "2",
+                "priceSilver": "8",
+                "priceGold": "6",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "68"
+            },
+            {
+                "itemId": "a19d20fb-5636-4ebb-be4a-6ad65929e0df",
+                "shopId": "9d01d87d-aab2-426f-a877-8355ed05d445",
+                "shopName": "Sport'acus",
+                "itemName": "Gant en mousse Orphikos",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/a4e770e2-941c-4182-ab9e-be9a13ad806a.png",
+                "localImagePath": "Items/Images/Sport'acus/Gant_en_mousse_Orphikos.png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Accessoires de Supporter",
+                "itemDescription": "<p>Les gants en mousse sont super pour montrer votre soutien à une équipe. Attention aux yeux des autres !&nbsp;</p>",
+                "priceBronze": "2",
+                "priceSilver": "8",
+                "priceGold": "6",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "69"
             }
         ]
     },
@@ -16176,6 +16475,32 @@
                 "stock": "",
                 "maxOwned": "0",
                 "position": "8"
+            }
+        ]
+    },
+    "Testing": {
+        "shopId": "cf2e26f8-f221-4e26-9c3e-04fb45f07257",
+        "shopName": "Testing",
+        "shopDescription": "<p><br></p>",
+        "categories": [],
+        "items": [
+            {
+                "itemId": "a1393947-0f1f-480c-aa30-fc17f6660f70",
+                "shopId": "cf2e26f8-f221-4e26-9c3e-04fb45f07257",
+                "shopName": "Testing",
+                "itemName": "zhzeiuhr",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/c662e677-5a5f-4dac-b716-a6c7d8dd8ffb.webp",
+                "localImagePath": "Items/Images/Testing/zhzeiuhr.webp",
+                "generalCategory": "Aucun",
+                "shopCategory": "Aucun",
+                "itemDescription": "<p>zjefhuir</p>",
+                "priceBronze": "0",
+                "priceSilver": "0",
+                "priceGold": "1",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "63"
             }
         ]
     }
