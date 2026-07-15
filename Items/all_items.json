@@ -661,6 +661,42 @@
                 "stock": "",
                 "maxOwned": "0",
                 "position": "8"
+            },
+            {
+                "itemId": "a24057e5-e523-4115-8fad-54a76ad11d11",
+                "shopId": "385d8ef2-b144-49b0-b910-7c5ea23ab636",
+                "shopName": "A'muse tes doigts",
+                "itemName": "Kit d'origami",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/3c1cfcc4-c1aa-4ebf-a2b3-67a7997e64c6.png",
+                "localImagePath": "Items/Images/A'muse_tes_doigts/Kit_d'origami.png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Arts plastiques",
+                "itemDescription": "<p>Vous souhaitez vous mettre à l’origami mais vous n’avez que des feuilles blanches sans âme et sans vie ? Voici un kit avec tout un tas de feuilles déjà coupées. Une forme en carré parfaite pour réaliser un bon nombre de figures, des couleurs éclatantes et des motifs joliment dessinés. De quoi fabriquer, grue, cocotte ou encore grenouille ! Vous trouverez même à l'intérieur une petite spatule pour marquer vos plis sans utiliser vos ongles.</p>",
+                "priceBronze": "5",
+                "priceSilver": "0",
+                "priceGold": "21",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "84"
+            },
+            {
+                "itemId": "a2405de3-e6c3-4112-b704-53a864d516ec",
+                "shopId": "385d8ef2-b144-49b0-b910-7c5ea23ab636",
+                "shopName": "A'muse tes doigts",
+                "itemName": "Ocarina",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/4f6e12af-4007-4c92-b6db-4c1935ad1ced.png",
+                "localImagePath": "Items/Images/A'muse_tes_doigts/Ocarina.png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Musique",
+                "itemDescription": "<p>Souvent fait d’argile, l’ocarina permet de jouer de nombreuses mélodies grâce à sa forme atypique. Assez simple d’utilisation, il vous faudra cependant une bonne dextérité dans les doigts et un souffle maîtrisé. Celui-ci est petit, donc facilement transportable. Mais attention, vous pourriez vous laisser surprendre par la nostalgie de sa musique !</p>",
+                "priceBronze": "7",
+                "priceSilver": "7",
+                "priceGold": "32",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "85"
             }
         ]
     },
@@ -4148,6 +4184,60 @@
                 "stock": "0",
                 "maxOwned": "1",
                 "position": "78"
+            },
+            {
+                "itemId": "a1bbf05c-4203-4c88-8689-fc6d103b7b40",
+                "shopId": "f79546f1-4a07-4bd4-ba21-80ef5fc066fa",
+                "shopName": "Hidden shop",
+                "itemName": "μαχαίρι νίκης",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/bfbb22f0-c6a4-44ef-bb8b-ab38e0e88066.PNG",
+                "localImagePath": "Items/Images/Hidden_shop/μαχαίρι_νίκης.PNG",
+                "generalCategory": "Wand",
+                "shopCategory": "Aucun",
+                "itemDescription": "<p>Set de dagues en or impérial, parfait pour planter ses crocs lorsque l'ennemi s'y attend le moins. L'ornement de l'arme et son nom « Dague de la Victoire »&nbsp;rappellent à tous qu'elles&nbsp;appartiennent à Phèdre Eisendhart, fille de Niké. Leur liseré doré honore les initiales des précédents Chefs du Panthéon Polémos, dont Phèdre a hérité la charge.</p>",
+                "priceBronze": "0",
+                "priceSilver": "0",
+                "priceGold": "1000000000",
+                "isGiftable": "Yes",
+                "stock": "0",
+                "maxOwned": "1",
+                "position": "79"
+            },
+            {
+                "itemId": "a1c41f0a-bfac-46c9-a7b5-873c7210d7a0",
+                "shopId": "f79546f1-4a07-4bd4-ba21-80ef5fc066fa",
+                "shopName": "Hidden shop",
+                "itemName": "Couverture de survie (Deluxe)",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/5cdc6ccb-f4f3-4fc5-89d0-8e9f6ae55336.webp",
+                "localImagePath": "Items/Images/Hidden_shop/Couverture_de_survie_(Deluxe).webp",
+                "generalCategory": "Aucun",
+                "shopCategory": "Aucun",
+                "itemDescription": "<p>Une couverture de survie légèrement plus pétante que l'originale. Sortie en édition limitée en WoO 26, elle protège de tous les vents et marées avec un doré parfaitement calibré qui saura en séduire plus d'un.</p>",
+                "priceBronze": "0",
+                "priceSilver": "0",
+                "priceGold": "1000000000",
+                "isGiftable": "Yes",
+                "stock": "0",
+                "maxOwned": "1",
+                "position": "80"
+            },
+            {
+                "itemId": "a1d5c719-6907-45d1-ba55-b9208865f896",
+                "shopId": "f79546f1-4a07-4bd4-ba21-80ef5fc066fa",
+                "shopName": "Hidden shop",
+                "itemName": "Lux",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/686c09e5-484d-4e4a-8eb2-dc6a5e34b806.PNG",
+                "localImagePath": "Items/Images/Hidden_shop/Lux.PNG",
+                "generalCategory": "Wand",
+                "shopCategory": "Aucun",
+                "itemDescription": "<p>Ce glaive en bronze céleste est une arme superbe, qui semble avoir été forgée par des mains avisées. Très droit, empreint de noblesse, discipliné et quelque peu effrayant, parfois, il est à l'image de son unique détenteur : Neil Lejuite, fils de Némésis.</p>",
+                "priceBronze": "0",
+                "priceSilver": "0",
+                "priceGold": "1000000000",
+                "isGiftable": "Yes",
+                "stock": "0",
+                "maxOwned": "1",
+                "position": "81"
             }
         ]
     },
@@ -6612,6 +6702,42 @@
                 "stock": "",
                 "maxOwned": "0",
                 "position": "75"
+            },
+            {
+                "itemId": "a240607b-3679-4732-8ed7-1342604806c8",
+                "shopId": "65796c5b-e37f-4edb-b067-8355ed060021",
+                "shopName": "Le bâton d'Asclépios",
+                "itemName": "Fauteuil roulant Aphrodite",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/85933c80-75ac-4343-a628-026508c7072a.webp",
+                "localImagePath": "Items/Images/Le_bâton_d'Asclépios/Fauteuil_roulant_Aphrodite.webp",
+                "generalCategory": "Aucun",
+                "shopCategory": "Fauteuils roulants",
+                "itemDescription": "<p>Un fauteuil roulant aussi optimal qu'élégant qui vous emmènera partout où ses roues peuvent rouler. De quoi frimer à la Colonie en toute mobilité, tout en honorant son parent divin.</p>",
+                "priceBronze": "0",
+                "priceSilver": "9",
+                "priceGold": "415",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "86"
+            },
+            {
+                "itemId": "a24060df-33ed-4752-9706-45db6ed689fd",
+                "shopId": "65796c5b-e37f-4edb-b067-8355ed060021",
+                "shopName": "Le bâton d'Asclépios",
+                "itemName": "Fauteuil roulant Poséidon",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/c159a63d-fff4-43fb-9de2-dcd3b34fb3eb.webp",
+                "localImagePath": "Items/Images/Le_bâton_d'Asclépios/Fauteuil_roulant_Poséidon.webp",
+                "generalCategory": "Aucun",
+                "shopCategory": "Fauteuils roulants",
+                "itemDescription": "<p>Un fauteuil roulant aussi optimal qu'élégant qui vous emmènera partout où ses roues peuvent rouler. De quoi frimer à la Colonie en toute mobilité, tout en honorant son parent divin.</p>",
+                "priceBronze": "0",
+                "priceSilver": "9",
+                "priceGold": "415",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "87"
             }
         ]
     },
@@ -7602,6 +7728,42 @@
                 "stock": "",
                 "maxOwned": "0",
                 "position": "8"
+            },
+            {
+                "itemId": "a240d2e8-3804-4c6b-b0ac-f289e859398d",
+                "shopId": "bb795e37-6a16-458a-a7aa-722db20eae45",
+                "shopName": "Le Prisme d'Iris",
+                "itemName": "Étendard Ace",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/608a7708-0cc1-4fb5-a027-0f9479f02c44.png",
+                "localImagePath": "Items/Images/Le_Prisme_d'Iris/Étendard_Ace.png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Drapeaux",
+                "itemDescription": "<p>Un grand étendard LGBTQI+ parfait pour courir et hurler à pleins poumons en défilé. On vous verra vous et votre fierté sur toutes les photos, soyez-en certain(e).</p>",
+                "priceBronze": "0",
+                "priceSilver": "0",
+                "priceGold": "50",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "89"
+            },
+            {
+                "itemId": "a240d82a-d995-4285-a354-ab3dc4337877",
+                "shopId": "bb795e37-6a16-458a-a7aa-722db20eae45",
+                "shopName": "Le Prisme d'Iris",
+                "itemName": "Tote bag Protect the Dolls",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/d298073e-f8ee-4a92-9643-daa5c3e20e28.webp",
+                "localImagePath": "Items/Images/Le_Prisme_d'Iris/Tote_bag_Protect_the_Dolls.webp",
+                "generalCategory": "Aucun",
+                "shopCategory": "Sacs",
+                "itemDescription": "<p>Qu'est-ce qui pourrait être plus slay que de protéger les vies des personnes transgenres ? Voilà. Alors voici un tote bag pour le crier haut et fort.</p>",
+                "priceBronze": "0",
+                "priceSilver": "5",
+                "priceGold": "30",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "90"
             }
         ]
     },
@@ -8600,6 +8762,24 @@
                 "stock": "",
                 "maxOwned": "0",
                 "position": "8"
+            },
+            {
+                "itemId": "a24066a3-6d59-44af-aab2-7f6ea59159f2",
+                "shopId": "f345dd58-ee9e-4f3a-91e0-8355ed06d197",
+                "shopName": "Les babioles de Pau-Paul",
+                "itemName": "Peluche axolotl",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/b357daab-22f9-4efb-b313-788a687a50da.png",
+                "localImagePath": "Items/Images/Les_babioles_de_Pau-Paul/Peluche_axolotl.png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Peluches",
+                "itemDescription": "<p>Vous rêvez d'avoir un axolotl, mais vous n'avez pas les moyens d'en acheter un vrai ? Surtout que c'est pas évident à emporter avec vous pendant vos quêtes... Pas de soucis, vous pouvez prendre cette adorable peluche à la place. Et une dose de mignonnerie, une !</p>",
+                "priceBronze": "0",
+                "priceSilver": "0",
+                "priceGold": "50",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "88"
             }
         ]
     },
@@ -12573,6 +12753,42 @@
                 "stock": "",
                 "maxOwned": "0",
                 "position": "46"
+            },
+            {
+                "itemId": "a210179c-53ef-43e3-917d-c5fef380f61f",
+                "shopId": "629dc830-59a0-4888-92ad-f802fba2afc7",
+                "shopName": "Les trésors d'Hadès",
+                "itemName": "Drachme mortuaire (Thanatos)",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/23f96eb2-ddf8-4c73-bf34-edac8f24592e.png",
+                "localImagePath": "Items/Images/Les_trésors_d'Hadès/Drachme_mortuaire_(Thanatos).png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Aucun",
+                "itemDescription": "<p>En tant que demi-dieu, il est toujours bon de porter avec soi une drachme pour garantir son passage chez Charon au cas où les choses tourneraient… très mal. Cette drachme représente Thanatos, et l'accueille les bras ouverts. Elle est idéale pour ceux convaincus que la mort est juste, et qu'il faut l'accepter le temps venu.</p>",
+                "priceBronze": "0",
+                "priceSilver": "0",
+                "priceGold": "1",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "82"
+            },
+            {
+                "itemId": "a2101841-814f-44c5-8a55-95dab3de80b4",
+                "shopId": "629dc830-59a0-4888-92ad-f802fba2afc7",
+                "shopName": "Les trésors d'Hadès",
+                "itemName": "Drachme mortuaire (Faux)",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/6f12a3b9-f469-4957-a48f-cefa57eff9a0.png",
+                "localImagePath": "Items/Images/Les_trésors_d'Hadès/Drachme_mortuaire_(Faux).png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Aucun",
+                "itemDescription": "<p>En tant que demi-dieu, il est toujours bon de porter avec soi une drachme pour garantir son passage chez Charon au cas où les choses tourneraient… très mal. Cette drachme représente une faux et des papillons, des attributs de la Mort sans qu'elle ne soit explicitement présente. Elle est idéale pour ceux prêts à tourner le dos à la mort, la défier, et n'accepter défaite qu'une fois que cette Drachme est dans les mains de Charon lui-même.&nbsp;</p>",
+                "priceBronze": "0",
+                "priceSilver": "0",
+                "priceGold": "1",
+                "isGiftable": "Yes",
+                "stock": "",
+                "maxOwned": "0",
+                "position": "83"
             }
         ]
     },
@@ -15205,6 +15421,24 @@
                 "stock": "",
                 "maxOwned": "0",
                 "position": "8"
+            },
+            {
+                "itemId": "a1b1872e-7a10-46fa-9a79-ab4b520db8d4",
+                "shopId": "d2eca8ae-1813-41dd-9dba-8355ed06364e",
+                "shopName": "Satyre et Toc",
+                "itemName": "Perle WoO 26",
+                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/3bdf97c7-e609-4c0f-8544-8194b204efc7.png",
+                "localImagePath": "Items/Images/Satyre_et_Toc/Perle_WoO_26.png",
+                "generalCategory": "Aucun",
+                "shopCategory": "Perles d'années",
+                "itemDescription": "<p>Perle de l'année WoO 26 représentant l'arrivée de la Quête de Pâques ainsi que l'hippalectryon de multiple couleurs de récompense.</p>",
+                "priceBronze": "0",
+                "priceSilver": "0",
+                "priceGold": "0",
+                "isGiftable": "Yes",
+                "stock": "0",
+                "maxOwned": "1",
+                "position": "78"
             }
         ]
     },
@@ -16483,25 +16717,6 @@
         "shopName": "Testing",
         "shopDescription": "<p><br></p>",
         "categories": [],
-        "items": [
-            {
-                "itemId": "a1393947-0f1f-480c-aa30-fc17f6660f70",
-                "shopId": "cf2e26f8-f221-4e26-9c3e-04fb45f07257",
-                "shopName": "Testing",
-                "itemName": "zhzeiuhr",
-                "imageUrl": "https://img.worldofpotter.eu/woo_fr/img/uploads/images/c662e677-5a5f-4dac-b716-a6c7d8dd8ffb.webp",
-                "localImagePath": "Items/Images/Testing/zhzeiuhr.webp",
-                "generalCategory": "Aucun",
-                "shopCategory": "Aucun",
-                "itemDescription": "<p>zjefhuir</p>",
-                "priceBronze": "0",
-                "priceSilver": "0",
-                "priceGold": "1",
-                "isGiftable": "Yes",
-                "stock": "",
-                "maxOwned": "0",
-                "position": "63"
-            }
-        ]
+        "items": []
     }
 }
